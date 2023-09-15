@@ -1,0 +1,35 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+	--background-start-rgb: 98, 178, 243;
+	--background-end-rgb: 193, 242, 229;
+	--color-transparent: #FFFFFF00;
+}
+
+body {
+	color: black;
+	background: url("/background.png");
+	background-position: top;
+	background-size: cover;
+	background-repeat: no-repeat;
+	user-select: none;
+	-webkit-tap-highlight-color: var(--color-transparent);
+}
+
+:fullscreen {
+	color: black;
+	background: url("/background.png");
+	background-position: top;
+	background-size: cover;
+	background-repeat: no-repeat;
+	user-select: none;
+}
+
+*:fullscreen
+*:-ms-fullscreen,
+*:-webkit-full-screen,
+*:-moz-full-screen {
+   overflow: scroll !important;
+}
