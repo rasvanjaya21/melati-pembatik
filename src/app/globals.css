@@ -10,8 +10,9 @@
 
 body {
 	color: black;
-	background: url("/background.png");
+	background: url("/background.webp");
 	background-position: top;
+	background-attachment: fixed;
 	background-size: cover;
 	background-repeat: no-repeat;
 	user-select: none;
@@ -20,16 +21,10 @@ body {
 
 :fullscreen {
 	color: black;
-	background: url("/background.png");
+	background: url("/background.webp");
 	background-position: top;
+	background-attachment: fixed;
 	background-size: cover;
 	background-repeat: no-repeat;
 	user-select: none;
-}
-
-*:fullscreen
-*:-ms-fullscreen,
-*:-webkit-full-screen,
-*:-moz-full-screen {
-   overflow: scroll !important;
 }

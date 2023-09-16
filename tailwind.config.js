@@ -10,7 +10,9 @@ module.exports = {
 	theme: {
 		extend: {
 			colors: {
-				primary: "#62B2F3"
+				primary: "#D8F1FF",
+				secondary: "#FFF4CC",
+				tertiary: "#FFE4F2"
 			},
 		},
 	},
@@ -18,15 +20,11 @@ module.exports = {
 		plugin(function ({ addUtilities }) {
 			addUtilities({
 			
-				/* Hide scrollbar for IE, Edge and Firefox */
 				".no-scrollbar": {
 					"-ms-overflow-style": "none",
-					/* IE and Edge */
 					"scrollbar-width": "none",
-					/* Firefox */
 				},
 
-				/* Hide scrollbar for Chrome, Safari and Opera */
 				".no-scrollbar::-webkit-scrollbar": {
 					display: "none",
 				},
