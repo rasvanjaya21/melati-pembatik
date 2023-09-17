@@ -28,3 +28,25 @@ body {
 	background-repeat: no-repeat;
 	user-select: none;
 }
+
+@keyframes float-up {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(-10%);
+    opacity: 1;
+  }
+}
+
+@keyframes float-over {
+  from {
+    transform: translateY(100%);
+    opacity: 0.5;
+  }
+  to {
+    transform: translateY(-200vh);
+    opacity: 1;
+  }
+}

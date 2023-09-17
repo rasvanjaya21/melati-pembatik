@@ -21,12 +21,44 @@ export default function Home() {
 	const [isFullscreeen, setIsFullscreeen] = useState(false)
 	const [isMainAudioPlaying, setIsMainAudioPlaying] = useState(false)
 
+	const [marioFailAudio, setMarioFailAudio] = useState(null);
+	const [marioClearAudio, setMarioClearAudio] = useState(null);
+	const [marioCompleteAudio, setMarioCompleteAudio] = useState(null);
+
+	const [firstAnswer, setFirstAnswer] = useState("")
+	const [secondAnswer, setSecondAnswer] = useState("")
+	const [thirdAnswer, setThirdAnswer] = useState("")
+	const [fourthAnswer, setFourthAnswer] = useState("")
+	const [fifthAnswer, setFifthAnswer] = useState("")
+	const [sixthAnswer, setSixthAnswer] = useState("")
+	const [seventhAnswer, setSeventhAnswer] = useState("")
+	const [eighthAnswer, setEighthAnswer] = useState("")
+
+	const [isFirstAnswerCorrect, setIsFirstAnswerCorrect] = useState(false)
+	const [isSecondAnswerCorrect, setIsSecondAnswerCorrect] = useState(false)
+	const [isThirdAnswerCorrect, setIsThirdAnswerCorrect] = useState(false)
+	const [isFourthAnswerCorrect, setIsFourthAnswerCorrect] = useState(false)
+	const [isFifthAnswerCorrect, setIsFifthAnswerCorrect] = useState(false)
+	const [isSixthAnswerCorrect, setIsSixthAnswerCorrect] = useState(false)
+	const [isSeventhAnswerCorrect, setIsSeventhAnswerCorrect] = useState(false)
+	const [isEighthAnswerCorrect, setIsEighthAnswerCorrect] = useState(false)
+
+	const [isBerlianOpened, setIsBerlianOpened] = useState(false)
+
 	useEffect(() => {
 		window.scrollTo({
 			top: 0,
 			behavior: 'smooth'
 		});
 	}, [step])
+	
+	useEffect(() => {
+		setTimeout(() => { 
+			if (isBerlianOpened) {
+				setIsBerlianOpened(false)
+			}
+		 }, 5000)
+	}, [isBerlianOpened])
 
 	useEffect(() => {
 
@@ -36,7 +68,38 @@ export default function Home() {
 		setStartAudio(new Audio("/start.mp3"))
 		setMenuAudio(new Audio("/menu.mp3"))
 
-	}, [setMainAudio, setSelectAudio, setBackAudio, setStartAudio, setMenuAudio])
+		setMarioFailAudio(new Audio("/mario-fail.mp3"))
+		setMarioClearAudio(new Audio("/mario-clear.mp3"))
+		setMarioCompleteAudio(new Audio("/mario-complete.mp3"))
+
+	}, [])
+
+	useEffect(() => {
+		if (firstAnswer + secondAnswer + thirdAnswer + fourthAnswer + fifthAnswer + sixthAnswer == "trakea" && step == "latihan-2") {
+			marioClearAudio.play()
+		}
+
+		if (firstAnswer.length == 1 && secondAnswer.length == 1 && thirdAnswer.length == 1 && fourthAnswer.length == 1 && fifthAnswer.length == 1 && sixthAnswer.length == 1 && firstAnswer + secondAnswer + thirdAnswer + fourthAnswer + fifthAnswer + sixthAnswer != "trakea" && step == "latihan-2") {
+			marioFailAudio.play()
+		}
+
+		if (firstAnswer + secondAnswer + thirdAnswer + fourthAnswer + fifthAnswer + sixthAnswer + seventhAnswer + eighthAnswer == "alveolus" && step == "latihan-3") {
+			marioClearAudio.play()
+		}
+
+		if (firstAnswer.length == 1 && secondAnswer.length == 1 && thirdAnswer.length == 1 && fourthAnswer.length == 1 && fifthAnswer.length == 1 && sixthAnswer.length == 1 && seventhAnswer.length == 1 && eighthAnswer.length == 1 && firstAnswer + secondAnswer + thirdAnswer + fourthAnswer + fifthAnswer + sixthAnswer + seventhAnswer + eighthAnswer != "alveolus" && step == "latihan-3") {
+			 marioFailAudio.play()
+		}
+
+		if (firstAnswer + secondAnswer + thirdAnswer + fourthAnswer + fifthAnswer + sixthAnswer + seventhAnswer == "fegbadc" && step == "latihan-4") {
+			marioClearAudio.play()
+		}
+
+		if (firstAnswer.length == 1 && secondAnswer.length == 1 && thirdAnswer.length == 1 && fourthAnswer.length == 1 && fifthAnswer.length == 1 && sixthAnswer.length == 1 && seventhAnswer.length == 1 && firstAnswer + secondAnswer + thirdAnswer + fourthAnswer + fifthAnswer + sixthAnswer + seventhAnswer != "fegbadc" && step == "latihan-4") {
+			marioFailAudio.play()
+		}
+
+	}, [firstAnswer, secondAnswer, thirdAnswer, fourthAnswer, fifthAnswer, sixthAnswer, seventhAnswer, eighthAnswer, marioFailAudio, marioClearAudio, step])
 
 	function handleBumperVideoPlay() {
 		bumperVideoRef.current.play();
@@ -80,7 +143,7 @@ export default function Home() {
 		<FullScreen handle={fullScreenHandler}>
 
 			{/* content screen */}
-			<div className={`flex justify-center h-screen p-10 pt-24 sm:p-24 sm:pt-14 ${isFullscreeen && `overflow-auto`}`}>
+			<div className={`flex justify-center h-screen p-10 pt-24 sm:p-24 sm:pt-10 2xl:pt-[90px] ${isFullscreeen && `overflow-auto`}`}>
 				<div className="flex flex-col w-full md:w-fit self-start">
 
 					{step == "welcome" ?
@@ -88,8 +151,8 @@ export default function Home() {
 							<div className='text-7xl font-black scale-105 duration-500'>🌼</div>
 							<div className="text-5xl font-black">Selamat datang di Melati</div>
 							<div className="text-xl font-black">Beranda Multimedia Pembelajaran Interaktif</div>
-							<div className="bg-black h-fit lg:h-[456px] mt-7 items-center justify-center rounded-3xl flex cursor-pointer"
-								onClick={(event) => {
+							<div className="bg-black h-fit lg:h-[462px] mt-7 items-center justify-center rounded-3xl flex cursor-pointer border border-solid border-b-8 border-black"
+								onClick={(event) => {	 
 									isBumperVideoPlaying ? handleBumperVideoPause() : handleBumperVideoPlay()
 								}}
 							>
@@ -105,7 +168,7 @@ export default function Home() {
 								}
 
 								<video
-									width="808px"
+									width="805px"
 									className="rounded-3xl"
 									preload="metadata"
 									ref={bumperVideoRef}
@@ -127,7 +190,7 @@ export default function Home() {
 								🥳 Mulai Petualangan Belajar
 							</button>
 							<button
-								className='text-black text-lg md:text-xl mb-16 md:mb-7 font-black bg-secondary p-2 rounded-2xl cursor-pointer mt-7 hover:scale-105 border border-solid border-b-8 border-black scale-100 duration-500'
+								className='text-black text-lg md:text-xl mb-16 sm:mb-7 font-black bg-secondary p-2 rounded-2xl cursor-pointer mt-7 hover:scale-105 border border-solid border-b-8 border-black scale-100 duration-500'
 								onClick={(event) => {
 									onClickStartPlaySound()
 									setIsBumperVideoPlaying(false);
@@ -141,7 +204,7 @@ export default function Home() {
 						<>
 							<div className="text-5xl font-black scale-100 duration-500">
 								<div className='text-7xl font-black scale-105 duration-500'>🤗</div>
-								<div className="text-5xl font-black">Petunjuk Penggunaan [1/4]</div>
+								<div className="text-5xl font-black">Petunjuk Penggunaan</div>
 								<div className="text-xl font-black scale-100 duration-500">Panduan Melati : Multimedia Pembelajaran Interaktif</div>
 							</div>
 							<div className='grid-rows-1 pb-7 w-full grid gap-10 mt-7 scale-100 duration-500'>
@@ -163,7 +226,7 @@ export default function Home() {
 									🌼 Beranda Melati
 								</button>
 								<button
-									className='text-black text-lg md:text-xl w-full font-black mb-16 md:mb-7 bg-secondary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black scale-100 duration-500'
+									className='text-black text-lg md:text-xl w-full font-black mb-16 sm:mb-7 bg-secondary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black scale-100 duration-500'
 									onClick={(event) => {
 										onClickStartSelectSound()
 										setStep("guide-2")
@@ -177,7 +240,7 @@ export default function Home() {
 						<>
 							<div className="text-5xl font-black ">
 								<div className='text-7xl font-black scale-105 duration-500'>🤗</div>
-								<div className="text-5xl font-black">Petunjuk Penggunaan [2/4]</div>
+								<div className="text-5xl font-black">Petunjuk Penggunaan</div>
 								<div className="text-xl font-black scale-100 duration-500">Panduan Melati : Multimedia Pembelajaran Interaktif</div>
 							</div>
 							<div className='grid-rows-1 pb-7 w-full grid gap-10 mt-7 '>
@@ -198,7 +261,7 @@ export default function Home() {
 									👈 Sebelumnya
 								</button>
 								<button
-									className='text-black text-lg md:text-xl w-full font-black mb-16 md:mb-7 bg-secondary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black scale-100 duration-500'
+									className='text-black text-lg md:text-xl w-full font-black mb-16 sm:mb-7 bg-secondary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black scale-100 duration-500'
 									onClick={(event) => {
 										onClickStartSelectSound()
 										setStep("guide-3")
@@ -212,7 +275,7 @@ export default function Home() {
 						<>
 							<div className="text-5xl font-black">
 								<div className='text-7xl font-black scale-105 duration-500'>🤗</div>
-								<div className="text-5xl font-black">Petunjuk Penggunaan [3/4]</div>
+								<div className="text-5xl font-black">Petunjuk Penggunaan</div>
 								<div className="text-xl font-black scale-100 duration-500">Panduan Melati : Multimedia Pembelajaran Interaktif</div>
 							</div>
 							<div className='grid-rows-1 pb-7 w-full grid gap-10 mt-7'>
@@ -233,7 +296,7 @@ export default function Home() {
 									👈 Sebelumnya
 								</button>
 								<button
-									className='text-black text-lg md:text-xl w-full font-black mb-16 md:mb-7 bg-secondary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black scale-100 duration-500'
+									className='text-black text-lg md:text-xl w-full font-black mb-16 sm:mb-7 bg-secondary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black scale-100 duration-500'
 									onClick={(event) => {
 										onClickStartSelectSound()
 										setStep("guide-4")
@@ -247,7 +310,7 @@ export default function Home() {
 						<>
 							<div className="text-5xl font-black">
 								<div className='text-7xl font-black scale-105 duration-500'>🤗</div>
-								<div className="text-5xl font-black">Petunjuk Penggunaan [4/4]</div>
+								<div className="text-5xl font-black">Petunjuk Penggunaan</div>
 								<div className="text-xl font-black scale-100 duration-500">Panduan Melati : Multimedia Pembelajaran Interaktif</div>
 							</div>
 							<div className='grid-rows-1 pb-7 w-full grid gap-10 mt-7'>
@@ -271,7 +334,7 @@ export default function Home() {
 									👈 Sebelumnya
 								</button>
 								<button
-									className='text-black text-lg md:text-xl w-full font-black mb-16 md:mb-7 bg-secondary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black scale-100 duration-500'
+									className='text-black text-lg md:text-xl w-full font-black mb-16 sm:mb-7 bg-secondary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black scale-100 duration-500'
 									onClick={(event) => {
 										onClickStartPlaySound()
 										setStep("welcome")
@@ -365,7 +428,7 @@ export default function Home() {
 							</div>
 
 							<button
-								className='text-black text-lg md:text-xl font-black mb-16 md:mb-7 bg-primary p-2 mt-7 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black scale-100 duration-500'
+								className='text-black text-lg md:text-xl font-black mb-16 sm:mb-7 bg-primary p-2 mt-7 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black scale-100 duration-500'
 								onClick={(event) => {
 									onClickStartPlaySound()
 									setIsBumperVideoPlaying(false);
@@ -379,7 +442,7 @@ export default function Home() {
 						<>
 							<div className="text-5xl font-black">
 								<div className='text-7xl font-black scale-105 duration-500'>💡</div>
-								<div className="text-5xl font-black">Konsep [1/3]</div>
+								<div className="text-5xl font-black">Konsep</div>
 								<div className="text-xl font-black scale-100 duration-500">Materi Pembelajaran</div>
 							</div>
 							<div className='grid-rows-1 pb-7 w-full grid gap-10 mt-7 scale-100 duration-500'>
@@ -399,7 +462,7 @@ export default function Home() {
 									🥳 Menu Utama
 								</button>
 								<button
-									className='text-black text-lg md:text-xl w-full font-black mb-16 md:mb-7 bg-secondary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black scale-100 duration-500'
+									className='text-black text-lg md:text-xl w-full font-black mb-16 sm:mb-7 bg-secondary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black scale-100 duration-500'
 									onClick={(event) => {
 										onClickStartSelectSound()
 										setStep("konsep-2")
@@ -413,7 +476,7 @@ export default function Home() {
 						<>
 							<div className="text-5xl font-black">
 								<div className='text-7xl font-black scale-105 duration-500'>💡</div>
-								<div className="text-5xl font-black">Konsep [2/3]</div>
+								<div className="text-5xl font-black">Konsep</div>
 								<div className="text-xl font-black scale-100 duration-500">Materi Pembelajaran</div>
 							</div>
 							<div className='grid-rows-1 pb-7 w-full grid gap-10 mt-7'>
@@ -435,7 +498,7 @@ export default function Home() {
 									👈 Sebelumnya
 								</button>
 								<button
-									className='text-black text-lg md:text-xl w-full font-black mb-16 md:mb-7 bg-secondary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black scale-100 duration-500'
+									className='text-black text-lg md:text-xl w-full font-black mb-16 sm:mb-7 bg-secondary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black scale-100 duration-500'
 									onClick={(event) => {
 										onClickStartSelectSound()
 										setStep("konsep-3")
@@ -449,7 +512,7 @@ export default function Home() {
 						<>
 							<div className="text-5xl font-black">
 								<div className='text-7xl font-black scale-105 duration-500'>💡</div>
-								<div className="text-5xl font-black">Konsep [3/3]</div>
+								<div className="text-5xl font-black">Konsep</div>
 								<div className="text-xl font-black scale-100 duration-500">Materi Pembelajaran</div>
 							</div>
 							<div className='grid-rows-1 pb-7 w-full grid gap-10 mt-7'>
@@ -469,7 +532,7 @@ export default function Home() {
 									👈 Sebelumnya
 								</button>
 								<button
-									className='text-black text-lg md:text-xl w-full font-black mb-16 md:mb-7 bg-secondary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black scale-100 duration-500'
+									className='text-black text-lg md:text-xl w-full font-black mb-16 sm:mb-7 bg-secondary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black scale-100 duration-500'
 									onClick={(event) => {
 										onClickStartPlaySound()
 										setStep("menu")
@@ -483,7 +546,7 @@ export default function Home() {
 						<>
 							<div className="text-5xl font-black">
 								<div className='text-7xl font-black scale-105 duration-500'>🤝</div>
-								<div className='text-5xl font-black'>Pendahuluan [1/1]</div>
+								<div className='text-5xl font-black'>Pendahuluan</div>
 								<div className="text-xl font-black scale-100 duration-500">Pengenalan Materi</div>
 							</div>
 							<div className='grid-rows-1 pb-7 w-full grid gap-10 mt-7 scale-100 duration-500'>
@@ -495,7 +558,7 @@ export default function Home() {
 							</div>
 							<div className='flex justify-between'>
 								<button
-									className='text-black text-lg md:text-xl w-full font-black mb-16 md:mb-7 bg-primary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black scale-100 duration-500'
+									className='text-black text-lg md:text-xl w-full font-black mb-16 sm:mb-7 bg-primary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black scale-100 duration-500'
 									onClick={(event) => {
 										onClickStartPlaySound()
 										setStep("menu")
@@ -509,7 +572,7 @@ export default function Home() {
 						<>
 							<div className="text-5xl font-black">
 								<div className='text-7xl font-black scale-105 duration-500'>🏷️</div>
-								<div className='text-5xl font-black'>Materi [1/11]</div>
+								<div className='text-5xl font-black'>Materi</div>
 								<div className="text-xl font-black scale-100 duration-500">Sistem Pernapasan</div>
 							</div>
 							<div className='grid-rows-1 pb-7 w-full grid gap-10 mt-7 scale-100 duration-500'>
@@ -531,7 +594,7 @@ export default function Home() {
 									🥳 Menu Utama
 								</button>
 								<button
-									className='text-black text-lg md:text-xl w-full font-black mb-16 md:mb-7 bg-secondary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black scale-100 duration-500'
+									className='text-black text-lg md:text-xl w-full font-black mb-16 sm:mb-7 bg-secondary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black scale-100 duration-500'
 									onClick={(event) => {
 										onClickStartSelectSound()
 										setStep("materi-2")
@@ -545,7 +608,7 @@ export default function Home() {
 						<>
 							<div className="text-5xl font-black">
 								<div className='text-7xl font-black scale-105 duration-500'>🏷️</div>
-								<div className='text-5xl font-black'>Materi [2/11]</div>
+								<div className='text-5xl font-black'>Materi</div>
 								<div className="text-xl font-black scale-100 duration-500">Sistem Pernapasan</div>
 							</div>
 							<div className='grid-rows-1 pb-7 w-full grid gap-10 mt-7'>
@@ -566,7 +629,7 @@ export default function Home() {
 									👈 Sebelumnya
 								</button>
 								<button
-									className='text-black text-lg md:text-xl w-full font-black mb-16 md:mb-7 bg-secondary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black scale-100 duration-500'
+									className='text-black text-lg md:text-xl w-full font-black mb-16 sm:mb-7 bg-secondary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black scale-100 duration-500'
 									onClick={(event) => {
 										onClickStartSelectSound()
 										setStep("materi-3")
@@ -580,7 +643,7 @@ export default function Home() {
 						<>
 							<div className="text-5xl font-black">
 								<div className='text-7xl font-black scale-105 duration-500'>🏷️</div>
-								<div className='text-5xl font-black'>Materi [3/11]</div>
+								<div className='text-5xl font-black'>Materi</div>
 								<div className="text-xl font-black scale-100 duration-500">Sistem Pernapasan</div>
 							</div>
 							<div className='grid-rows-1 pb-7 w-full grid gap-10 mt-7'>
@@ -600,7 +663,7 @@ export default function Home() {
 									👈 Sebelumnya
 								</button>
 								<button
-									className='text-black text-lg md:text-xl w-full font-black mb-16 md:mb-7 bg-secondary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black scale-100 duration-500'
+									className='text-black text-lg md:text-xl w-full font-black mb-16 sm:mb-7 bg-secondary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black scale-100 duration-500'
 									onClick={(event) => {
 										onClickStartSelectSound()
 										setStep("materi-4")
@@ -614,7 +677,7 @@ export default function Home() {
 						<>
 							<div className="text-5xl font-black">
 								<div className='text-7xl font-black scale-105 duration-500'>🏷️</div>
-								<div className='text-5xl font-black'>Materi [4/11]</div>
+								<div className='text-5xl font-black'>Materi</div>
 								<div className="text-xl font-black scale-100 duration-500">Sistem Pernapasan</div>
 							</div>
 							<div className='grid-rows-1 pb-7 w-full grid gap-10 mt-7'>
@@ -634,7 +697,7 @@ export default function Home() {
 									👈 Sebelumnya
 								</button>
 								<button
-									className='text-black text-lg md:text-xl w-full font-black mb-16 md:mb-7 bg-secondary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black scale-100 duration-500'
+									className='text-black text-lg md:text-xl w-full font-black mb-16 sm:mb-7 bg-secondary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black scale-100 duration-500'
 									onClick={(event) => {
 										onClickStartSelectSound()
 										setStep("materi-5")
@@ -648,7 +711,7 @@ export default function Home() {
 						<>
 							<div className="text-5xl font-black">
 								<div className='text-7xl font-black scale-105 duration-500'>🏷️</div>
-								<div className='text-5xl font-black'>Materi [5/11]</div>
+								<div className='text-5xl font-black'>Materi</div>
 								<div className="text-xl font-black scale-100 duration-500">Sistem Pernapasan</div>
 							</div>
 							<div className='grid-rows-1 pb-7 w-full grid gap-10 mt-7'>
@@ -668,7 +731,7 @@ export default function Home() {
 									👈 Sebelumnya
 								</button>
 								<button
-									className='text-black text-lg md:text-xl w-full font-black mb-16 md:mb-7 bg-secondary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black scale-100 duration-500'
+									className='text-black text-lg md:text-xl w-full font-black mb-16 sm:mb-7 bg-secondary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black scale-100 duration-500'
 									onClick={(event) => {
 										onClickStartSelectSound()
 										setStep("materi-6")
@@ -682,7 +745,7 @@ export default function Home() {
 						<>
 							<div className="text-5xl font-black">
 								<div className='text-7xl font-black scale-105 duration-500'>🏷️</div>
-								<div className='text-5xl font-black'>Materi [6/11]</div>
+								<div className='text-5xl font-black'>Materi</div>
 								<div className="text-xl font-black scale-100 duration-500">Sistem Pernapasan</div>
 							</div>
 							<div className='grid-rows-1 pb-7 w-full grid gap-10 mt-7'>
@@ -702,7 +765,7 @@ export default function Home() {
 									👈 Sebelumnya
 								</button>
 								<button
-									className='text-black text-lg md:text-xl w-full font-black mb-16 md:mb-7 bg-secondary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black scale-100 duration-500'
+									className='text-black text-lg md:text-xl w-full font-black mb-16 sm:mb-7 bg-secondary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black scale-100 duration-500'
 									onClick={(event) => {
 										onClickStartSelectSound()
 										setStep("materi-7")
@@ -716,7 +779,7 @@ export default function Home() {
 						<>
 							<div className="text-5xl font-black">
 								<div className='text-7xl font-black scale-105 duration-500'>🏷️</div>
-								<div className='text-5xl font-black'>Materi [7/11]</div>
+								<div className='text-5xl font-black'>Materi</div>
 								<div className="text-xl font-black scale-100 duration-500">Sistem Pernapasan</div>
 							</div>
 							<div className='grid-rows-1 pb-7 w-full grid gap-10 mt-7'>
@@ -736,7 +799,7 @@ export default function Home() {
 									👈 Sebelumnya
 								</button>
 								<button
-									className='text-black text-lg md:text-xl w-full font-black mb-16 md:mb-7 bg-secondary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black scale-100 duration-500'
+									className='text-black text-lg md:text-xl w-full font-black mb-16 sm:mb-7 bg-secondary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black scale-100 duration-500'
 									onClick={(event) => {
 										onClickStartSelectSound()
 										setStep("materi-8")
@@ -750,7 +813,7 @@ export default function Home() {
 						<>
 							<div className="text-5xl font-black">
 								<div className='text-7xl font-black scale-105 duration-500'>🏷️</div>
-								<div className='text-5xl font-black'>Materi [8/11]</div>
+								<div className='text-5xl font-black'>Materi</div>
 								<div className="text-xl font-black scale-100 duration-500">Sistem Pernapasan</div>
 							</div>
 							<div className='grid-rows-1 pb-7 w-full grid gap-10 mt-7'>
@@ -770,7 +833,7 @@ export default function Home() {
 									👈 Sebelumnya
 								</button>
 								<button
-									className='text-black text-lg md:text-xl w-full font-black mb-16 md:mb-7 bg-secondary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black scale-100 duration-500'
+									className='text-black text-lg md:text-xl w-full font-black mb-16 sm:mb-7 bg-secondary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black scale-100 duration-500'
 									onClick={(event) => {
 										onClickStartSelectSound()
 										setStep("materi-9")
@@ -784,7 +847,7 @@ export default function Home() {
 						<>
 							<div className="text-5xl font-black">
 								<div className='text-7xl font-black scale-105 duration-500'>🏷️</div>
-								<div className='text-5xl font-black'>Materi [9/11]</div>
+								<div className='text-5xl font-black'>Materi</div>
 								<div className="text-xl font-black scale-100 duration-500">Sistem Pernapasan</div>
 							</div>
 							<div className='grid-rows-1 pb-7 w-full grid gap-10 mt-7'>
@@ -804,7 +867,7 @@ export default function Home() {
 									👈 Sebelumnya
 								</button>
 								<button
-									className='text-black text-lg md:text-xl w-full font-black mb-16 md:mb-7 bg-secondary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black scale-100 duration-500'
+									className='text-black text-lg md:text-xl w-full font-black mb-16 sm:mb-7 bg-secondary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black scale-100 duration-500'
 									onClick={(event) => {
 										onClickStartSelectSound()
 										setStep("materi-10")
@@ -818,7 +881,7 @@ export default function Home() {
 						<>
 							<div className="text-5xl font-black">
 								<div className='text-7xl font-black scale-105 duration-500'>🏷️</div>
-								<div className='text-5xl font-black'>Materi [10/11]</div>
+								<div className='text-5xl font-black'>Materi</div>
 								<div className="text-xl font-black scale-100 duration-500">Sistem Pernapasan</div>
 							</div>
 							<div className='grid-rows-1 pb-7 w-full grid gap-10 mt-7'>
@@ -838,7 +901,7 @@ export default function Home() {
 									👈 Sebelumnya
 								</button>
 								<button
-									className='text-black text-lg md:text-xl w-full font-black mb-16 md:mb-7 bg-secondary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black scale-100 duration-500'
+									className='text-black text-lg md:text-xl w-full font-black mb-16 sm:mb-7 bg-secondary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black scale-100 duration-500'
 									onClick={(event) => {
 										onClickStartSelectSound()
 										setStep("materi-11")
@@ -852,15 +915,15 @@ export default function Home() {
 						<>
 							<div className="text-5xl font-black">
 								<div className='text-7xl font-black scale-105 duration-500'>🏷️</div>
-								<div className='text-5xl font-black'>Materi [11/11]</div>
+								<div className='text-5xl font-black'>Materi</div>
 								<div className="text-xl font-black scale-100 duration-500">Sistem Pernapasan</div>
 							</div>
 							<div className='grid-rows-1 pb-7 w-full grid gap-10 mt-7'>
-								<div className="bg-black h-fit lg:h-[456px] items-center justify-center rounded-3xl flex cursor-pointer">
+								<div className="bg-black h-fit lg:h-[462px] items-center justify-center rounded-3xl flex cursor-pointer border border-solid border-b-8 border-black">
 									<video
 										autoPlay
 										controls
-										width="808px"
+										width="805px"
 										className="rounded-3xl"
 										preload="metadata"
 									>
@@ -879,7 +942,7 @@ export default function Home() {
 									👈 Sebelumnya
 								</button>
 								<button
-									className='text-black text-lg md:text-xl w-full font-black mb-16 md:mb-7 bg-secondary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black scale-100 duration-500'
+									className='text-black text-lg md:text-xl w-full font-black mb-16 sm:mb-7 bg-secondary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black scale-100 duration-500'
 									onClick={(event) => {
 										onClickStartPlaySound()
 										setStep("menu")
@@ -898,7 +961,7 @@ export default function Home() {
 							</div>
 							<div className='grid-rows-1 pb-7 w-full grid gap-10 mt-7 scale-100 duration-500'>
 								<div className='max-w-[808px] h-full bg-tertiary rounded-2xl shadow-2xl border border-solid border-b-8 border-black'>
-									<div className='text-base md:text-xl p-10 font-black'>Halo, teman - teman</div>
+									<div className='text-base md:text-xl p-10 font-black'>Halo, teman - teman !</div>
 									<div className='text-base md:text-xl p-10 pt-0 font-black'>Setelah kalian berjuang dalam memahami materi tadi, saat nya untuk kalian bermain games</div>
 									<div className='text-base md:text-xl p-10 pt-0 font-black'>Nama games nya adalah mencari harta karun 🎉</div>
 									<div className='text-base md:text-xl p-10 pt-0 font-black'>Nantinya kalian akan diberi suatu petunjuk yang mengarah ke tempat harta karun berada loh, wah keren kaan !</div>
@@ -909,13 +972,1253 @@ export default function Home() {
 									className='text-black text-lg md:text-xl w-full font-black bg-primary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black scale-100 duration-500'
 									onClick={(event) => {
 										onClickStartPlaySound()
+										onClickStartMainSound()
+										setIsMainAudioPlaying(true)
 										setStep("latihan-2")
 									}}
 								>
 									🎮 Mulai Games
 								</button>
 								<button
-									className='text-black text-lg md:text-xl w-full font-black mb-16 md:mb-7 bg-secondary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black scale-100 duration-500'
+									className='text-black text-lg md:text-xl w-full font-black mb-16 sm:mb-7 bg-secondary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black scale-100 duration-500'
+									onClick={(event) => {
+										onClickStartPlaySound()
+										setStep("menu")
+									}}
+								>
+									🥳 Menu Utama
+								</button>
+							</div>
+						</>
+					: step == "latihan-2" ?
+						<>
+							<div className="text-5xl font-black">
+								<div className='text-7xl font-black scale-105 duration-500'>💪</div>
+								<div className='text-5xl font-black'>Latihan</div>	
+								<div className="text-xl font-black scale-100 duration-500">Evaluasi Pemahaman</div>
+							</div>
+							<div className='grid-rows-1 w-fit grid gap-10 mt-7 scale-100 duration-500'>
+								<div className='max-w-[808px] h-fit bg-tertiary rounded-2xl shadow-2xl border border-solid border-b-8 border-black'>
+
+									{/* jawaban benar */}
+									{firstAnswer + secondAnswer + thirdAnswer + fourthAnswer + fifthAnswer + sixthAnswer == "trakea" &&
+										<div className='absolute w-full h-full bg-secondary/50 z-10 rounded-2xl shadow-2xl backdrop-blur-sm border border-solid border-b-8 border-black'>
+											<div className='grid h-full place-items-center'>
+												<div className='flex flex-col items-center'>
+													<div className='text-9xl animate-[float-up_1s_forwards]'>
+														🎉
+													</div>
+													<div className='text-base md:text-2xl font-black text-green-500'>
+														{firstAnswer + secondAnswer + thirdAnswer + fourthAnswer + fifthAnswer + sixthAnswer}
+													</div>
+													<div className='text-base md:text-2xl font-black text-gray-400'>
+														Selamat Jawaban Benar
+													</div>
+													<div className='text-base md:text-2xl font-black text-gray-600'>
+														Level Berikutnya Menantimu
+													</div>
+												</div>
+											</div>
+										</div>
+									}
+
+									{firstAnswer.length == 1 && secondAnswer.length == 1 && thirdAnswer.length == 1 && fourthAnswer.length == 1 && fifthAnswer.length == 1 && sixthAnswer.length == 1 && firstAnswer + secondAnswer + thirdAnswer + fourthAnswer + fifthAnswer + sixthAnswer != "trakea" &&
+										<div className='absolute w-full h-full bg-secondary/50 z-10 rounded-2xl shadow-2xl backdrop-blur-sm border border-solid border-b-8 border-black'>
+											<div className='grid h-full place-items-center'>
+												<div className='flex flex-col items-center'>
+													<div className='text-9xl animate-bounce'>
+														😿
+													</div>
+													<div className='text-base md:text-2xl font-black text-red-500'>
+														{firstAnswer + secondAnswer + thirdAnswer + fourthAnswer + fifthAnswer + sixthAnswer}
+													</div>
+													<div className='text-base md:text-2xl font-black text-gray-400'>
+														Maaf Jawaban Salah
+													</div>
+													<div className='text-base md:text-2xl font-black text-gray-600'>
+														Jangan Putus Asa, Ayo Coba Lagi
+													</div>
+												</div>
+											</div>
+										</div>
+									}
+
+									<div className='w-full'>
+
+										<div className='w-fit'>
+
+											<div className='flex text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl p-10 w-full justify-between'>
+												<div className=' -scale-x-100 animate-pulse'>🏃</div>
+												<div className=' animate-bounce'>🐛</div>
+												<div className=''>🦗</div>
+												<div className=''>🐞</div>
+												<div className=' animate-pulse'>💎</div>
+											</div>
+											<div className='p-10 pt-0 pb-0 h-full'>
+												<div className='text-base md:text-xl font-black'>
+													Level 1 : Melawan Raja Ulat
+												</div>
+
+												<div className='mt-7 text-base md:text-xl font-black'>
+													Organ pernapasan manusia yang berfungsi untuk mendorong keluar debu - debu dan bakteri yang masuk saat kita bernapas adalah ?
+												</div>
+											</div>
+
+										</div>
+
+										<div className='w-full place-content-center flex'>
+
+											<div className='flex flex-wrap place-content-center w-fit p-10 gap-5 scale-100 duration-500 '>
+												<div className='bg-tertiary w-14 h-14 flex place-content-center'>
+													<input
+														id='first-answer'
+														autoComplete="off"
+														type="text"
+														value={firstAnswer.toUpperCase()}
+														onChange={(event) => {
+															setFirstAnswer(event.target.value.toLowerCase().slice(0, 1))
+															if (event.target.value == "") {
+																document.getElementById('first-answer').focus();
+															} else {
+																document.getElementById('second-answer').focus();
+															}
+														}}
+														onClick={(event) => {
+															document.getElementById('first-answer').select()
+														}}
+														onKeyDown={(event) => {
+															onClickStartSelectSound()
+															if (event.key === "Backspace") {
+																if (firstAnswer == "") {
+																	document.getElementById('first-answer').focus();
+																} else {
+																	setFirstAnswer("")
+																}
+															}
+														}}
+														onFocus={(event) => {
+															document.getElementById('first-answer').select()
+														}}
+														maxLength={1}
+														className={`bg-white outline-none focus:outline-primary text-black text-xl rounded-lg  w-full text-center ${firstAnswer.length == 1 && `outline-primary`}`}
+														placeholder={"-"}
+													/>
+												</div>
+
+												<div className='bg-tertiary w-14 h-14 flex place-content-center'>
+													<input
+														id='second-answer'
+														autoComplete="off"
+														type="text"
+														value={secondAnswer.toUpperCase()}
+														onChange={(event) => {
+															setSecondAnswer(event.target.value.toLowerCase().slice(0, 1))
+															if (event.target.value == "") {
+																document.getElementById('second-answer').focus();
+															} else {
+																document.getElementById('third-answer').focus();
+															}
+														}}
+														onClick={(event) => {
+															document.getElementById('second-answer').select()
+														}}
+														onKeyDown={(event) => {
+															onClickStartSelectSound()
+															if (event.key === "Backspace") {
+																if (secondAnswer == "") {
+																	document.getElementById('first-answer').focus();
+																} else {
+																	setSecondAnswer("")
+																}
+															}
+														}}
+														onFocus={(event) => {
+															document.getElementById('second-answer').select()
+														}}
+														maxLength={1}
+														className={`bg-white outline-none focus:outline-primary text-black text-xl rounded-lg  w-full text-center ${secondAnswer.length == 1 && `outline-primary`}`}
+														placeholder={"-"}
+													/>
+												</div>
+
+												<div className='bg-tertiary w-14 h-14 flex place-content-center'>
+													<input
+														id='third-answer'
+														autoComplete="off"
+														type="text"
+														value={thirdAnswer.toUpperCase()}
+														onChange={(event) => {
+															setThirdAnswer(event.target.value.toLowerCase().slice(0, 1))
+															if (event.target.value == "") {
+																document.getElementById('third-answer').focus();
+															} else {
+																document.getElementById('fourth-answer').focus();
+															}
+														}}
+														onClick={(event) => {
+															document.getElementById('third-answer').select()
+														}}
+														onKeyDown={(event) => {
+															onClickStartSelectSound()
+															if (event.key === "Backspace") {
+																if (thirdAnswer == "") {
+																	document.getElementById('second-answer').focus();
+																} else {
+																	setThirdAnswer("")
+																}
+															}
+														}}
+														onFocus={(event) => {
+															document.getElementById('third-answer').select()
+														}}
+														maxLength={1}
+														className={`bg-white outline-none focus:outline-primary text-black text-xl rounded-lg  w-full text-center ${thirdAnswer.length == 1 && `outline-primary`}`}
+														placeholder={"-"}
+													/>
+												</div>
+
+												<div className='bg-tertiary w-14 h-14 flex place-content-center'>
+													<input
+														id='fourth-answer'
+														autoComplete="off"
+														type="text"
+														value={fourthAnswer.toUpperCase()}
+														onChange={(event) => {
+															setFourthAnswer(event.target.value.toLowerCase().slice(0, 1))
+															if (event.target.value == "") {
+																document.getElementById('fourth-answer').focus();
+															} else {
+																document.getElementById('fifth-answer').focus();
+															}
+														}}
+														onClick={(event) => {
+															document.getElementById('fourth-answer').select()
+														}}
+														onKeyDown={(event) => {
+															onClickStartSelectSound()
+															if (event.key === "Backspace") {
+																if (fourthAnswer == "") {
+																	document.getElementById('third-answer').focus();
+																} else {
+																	setFourthAnswer("")
+																}
+															}
+														}}
+														onFocus={(event) => {
+															document.getElementById('fourth-answer').select()
+														}}
+														maxLength={1}
+														className={`bg-white outline-none focus:outline-primary text-black text-xl rounded-lg  w-full text-center ${fourthAnswer.length == 1 && `outline-primary`}`}
+														placeholder={"-"}
+													/>
+												</div>
+
+												<div className='bg-tertiary w-14 h-14 flex place-content-center'>
+													<input
+														id='fifth-answer'
+														autoComplete="off"
+														type="text"
+														value={fifthAnswer.toUpperCase()}
+														onChange={(event) => {
+															setFifthAnswer(event.target.value.toLowerCase().slice(0, 1))
+															if (event.target.value == "") {
+																document.getElementById('fifth-answer').focus();
+															} else {
+																document.getElementById('sixth-answer').focus();
+															}
+														}}
+														onClick={(event) => {
+															document.getElementById('fifth-answer').select()
+														}}
+														onKeyDown={(event) => {
+															onClickStartSelectSound()
+															if (event.key === "Backspace") {
+																if (fifthAnswer == "") {
+																	document.getElementById('fourth-answer').focus();
+																} else {
+																	setFifthAnswer("")
+																}
+															}
+														}}
+														onFocus={(event) => {
+															document.getElementById('fifth-answer').select()
+														}}
+														maxLength={1}
+														className={`bg-white outline-none focus:outline-primary text-black text-xl rounded-lg  w-full text-center ${fifthAnswer.length == 1 && `outline-primary`}`}
+														placeholder={"-"}
+													/>
+												</div>
+												
+												<div className='bg-tertiary w-14 h-14 flex place-content-center'>
+													<input
+														id='sixth-answer'
+														autoComplete="off"
+														type="text"
+														value={sixthAnswer.toUpperCase()}
+														onChange={(event) => {
+															setSixthAnswer(event.target.value.toLowerCase().slice(0, 1))
+															if (event.target.value == "") {
+																document.getElementById('sixth-answer').focus();
+															} else {
+																document.getElementById('sixth-answer').blur();
+															}
+														}}
+														onClick={(event) => {
+															document.getElementById('sixth-answer').select()
+														}}
+														onKeyDown={(event) => {
+															onClickStartSelectSound()
+															if (event.key === "Backspace") {
+																if (sixthAnswer == "") {
+																	document.getElementById('fifth-answer').focus();
+																} else {
+																	setSixthAnswer("")
+																}
+															}
+														}}
+														onFocus={(event) => {
+															document.getElementById('sixth-answer').select()
+														}}
+														maxLength={1}
+														className={`bg-white outline-none focus:outline-primary text-black text-xl rounded-lg  w-full text-center ${sixthAnswer.length == 1 && `outline-primary`}`}
+														placeholder={"-"}
+													/>
+												</div>
+
+											</div>
+
+										</div>
+
+									</div>
+									<div className='text-base md:text-xl p-10 pt-0 font-black'>Isilah jawaban yang sesuai, kalahkan musuh dan kalian akan menemukan berlian nya !</div>
+								</div>
+							</div>
+							<div className='flex flex-col pt-7 justify-between'>
+								<button
+									className={`text-black text-lg md:text-xl w-full font-black bg-primary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black scale-100 duration-500 ${firstAnswer + secondAnswer + thirdAnswer + fourthAnswer + fifthAnswer + sixthAnswer == "trakea" || firstAnswer.length == 1 && secondAnswer.length == 1 && thirdAnswer.length == 1 && fourthAnswer.length == 1 && fifthAnswer.length == 1 && sixthAnswer.length == 1 && firstAnswer + secondAnswer + thirdAnswer + fourthAnswer + fifthAnswer + sixthAnswer != "trakea" ? `mb-7` : `mb-16 sm:mb-7`}`}
+									onClick={(event) => {
+										onClickStartPlaySound()
+										setFirstAnswer("")
+										setSecondAnswer("")
+										setThirdAnswer("")
+										setFourthAnswer("")
+										setFifthAnswer("")
+										setSixthAnswer("")
+										setSeventhAnswer("")
+										setEighthAnswer("")
+										setStep("menu")
+									}}
+								>
+									🥳 Menu Utama
+								</button>
+								{firstAnswer + secondAnswer + thirdAnswer + fourthAnswer + fifthAnswer + sixthAnswer == "trakea" &&
+									<button
+										className='text-black text-lg md:text-xl w-full font-black mb-16 sm:mb-7 bg-secondary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black scale-100 duration-500'
+										onClick={(event) => {
+											onClickStartPlaySound()
+											setFirstAnswer("")
+											setSecondAnswer("")
+											setThirdAnswer("")
+											setFourthAnswer("")
+											setFifthAnswer("")
+											setSixthAnswer("")
+											setSeventhAnswer("")
+											setEighthAnswer("")
+											setStep("latihan-3")
+										}}
+									>
+										🎮 Lanjut Level 2
+									</button>
+								}
+								{firstAnswer.length == 1 && secondAnswer.length == 1 && thirdAnswer.length == 1 && fourthAnswer.length == 1 && fifthAnswer.length == 1 && sixthAnswer.length == 1 && firstAnswer + secondAnswer + thirdAnswer + fourthAnswer + fifthAnswer + sixthAnswer != "trakea" &&
+									<button
+										className='text-black text-lg md:text-xl w-full font-black mb-16 sm:mb-7 bg-secondary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black scale-100 duration-500'
+										onClick={(event) => {
+											onClickStartPlaySound()
+											setFirstAnswer("")
+											setSecondAnswer("")
+											setThirdAnswer("")
+											setFourthAnswer("")
+											setFifthAnswer("")
+											setSixthAnswer("")
+											setSeventhAnswer("")
+											setEighthAnswer("")
+										}}
+									>
+										🎮 Coba Lagi
+									</button>
+								}
+							</div>
+						</>
+					: step == "latihan-3" ?
+						<>
+							<div className="text-5xl font-black">
+								<div className='text-7xl font-black scale-105 duration-500'>💪</div>
+								<div className='text-5xl font-black'>Latihan</div>	
+								<div className="text-xl font-black scale-100 duration-500">Evaluasi Pemahaman</div>
+							</div>
+							<div className='grid-rows-1 w-fit grid gap-10 mt-7 scale-100 duration-500'>
+								<div className='max-w-[808px] h-fit bg-tertiary rounded-2xl shadow-2xl border border-solid border-b-8 border-black'>
+
+									{/* jawaban benar */}
+									{firstAnswer + secondAnswer + thirdAnswer + fourthAnswer + fifthAnswer + sixthAnswer + seventhAnswer + eighthAnswer == "alveolus" &&
+										<div className='absolute w-full h-full bg-secondary/50 z-10 rounded-2xl shadow-2xl backdrop-blur-sm border border-solid border-b-8 border-black'>
+											<div className='grid h-full place-items-center'>
+												<div className='flex flex-col items-center'>
+													<div className='text-9xl animate-[float-up_1s_forwards]'>
+														🎉
+													</div>
+													<div className='text-base md:text-2xl font-black text-green-500'>
+														{firstAnswer + secondAnswer + thirdAnswer + fourthAnswer + fifthAnswer + sixthAnswer + seventhAnswer + eighthAnswer}
+													</div>
+													<div className='text-base md:text-2xl font-black text-gray-400'>
+														Selamat Jawaban Benar
+													</div>
+													<div className='text-base md:text-2xl font-black text-gray-600'>
+														Level Berikutnya Menantimu
+													</div>
+												</div>
+											</div>
+										</div>
+									}
+
+									{firstAnswer.length == 1 && secondAnswer.length == 1 && thirdAnswer.length == 1 && fourthAnswer.length == 1 && fifthAnswer.length == 1 && sixthAnswer.length == 1 && seventhAnswer.length == 1 && eighthAnswer.length == 1 && firstAnswer + secondAnswer + thirdAnswer + fourthAnswer + fifthAnswer + sixthAnswer + seventhAnswer + eighthAnswer != "alveolus" &&
+										<div className='absolute w-full h-full bg-secondary/50 z-10 rounded-2xl shadow-2xl backdrop-blur-sm border border-solid border-b-8 border-black'>
+											<div className='grid h-full place-items-center'>
+												<div className='flex flex-col items-center'>
+													<div className='text-9xl animate-bounce'>
+														😿
+													</div>
+													<div className='text-base md:text-2xl font-black text-red-500'>
+														{firstAnswer + secondAnswer + thirdAnswer + fourthAnswer + fifthAnswer + sixthAnswer + seventhAnswer + eighthAnswer}
+													</div>
+													<div className='text-base md:text-2xl font-black text-gray-400'>
+														Maaf Jawaban Salah
+													</div>
+													<div className='text-base md:text-2xl font-black text-gray-600'>
+														Jangan Putus Asa, Ayo Coba Lagi
+													</div>
+												</div>
+											</div>
+										</div>
+									}
+
+									<div className='w-full'>
+
+										<div className='w-fit'>
+
+											<div className='flex text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl p-10 w-full justify-between'>
+												<div className=' -scale-x-100 animate-pulse'>🏃</div>
+												<div className='flex place-items-center place-content-center'><div className='absolute text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl text-red-600 font-black'>X</div>🐛</div>
+												<div className='animate-bounce'>🦗</div>
+												<div className=''>🐞</div>
+												<div className=' animate-pulse'>💎</div>
+											</div>
+											<div className='p-10 pt-0 pb-0 h-full'>
+												<div className='text-base md:text-xl font-black'>
+													Level 2 : Melawan Raja Belalang
+												</div>
+
+												<div className='mt-7 text-base md:text-xl font-black'>
+													Organ pernapasan manusia yang mempunyai bentuk unik, mirip kantong kecil yang berkerumun seperti buah anggur disebut ?
+												</div>
+											</div>
+
+										</div>
+
+										<div className='w-full place-content-center flex'>
+
+											<div className='flex flex-wrap place-content-center w-fit p-10 gap-5 scale-100 duration-500 '>
+												<div className='bg-tertiary w-14 h-14 flex place-content-center'>
+													<input
+														id='first-answer'
+														autoComplete="off"
+														type="text"
+														value={firstAnswer.toUpperCase()}
+														onChange={(event) => {
+															setFirstAnswer(event.target.value.toLowerCase().slice(0, 1))
+															if (event.target.value == "") {
+																document.getElementById('first-answer').focus();
+															} else {
+																document.getElementById('second-answer').focus();
+															}
+														}}
+														onClick={(event) => {
+															document.getElementById('first-answer').select()
+														}}
+														onKeyDown={(event) => {
+															onClickStartSelectSound()
+															if (event.key === "Backspace") {
+																if (firstAnswer == "") {
+																	document.getElementById('first-answer').focus();
+																} else {
+																	setFirstAnswer("")
+																}
+															}
+														}}
+														onFocus={(event) => {
+															document.getElementById('first-answer').select()
+														}}
+														maxLength={1}
+														className={`bg-white outline-none focus:outline-primary text-black text-xl rounded-lg  w-full text-center ${firstAnswer.length == 1 && `outline-primary`}`}
+														placeholder={"-"}
+													/>
+												</div>
+
+												<div className='bg-tertiary w-14 h-14 flex place-content-center'>
+													<input
+														id='second-answer'
+														autoComplete="off"
+														type="text"
+														value={secondAnswer.toUpperCase()}
+														onChange={(event) => {
+															setSecondAnswer(event.target.value.toLowerCase().slice(0, 1))
+															if (event.target.value == "") {
+																document.getElementById('second-answer').focus();
+															} else {
+																document.getElementById('third-answer').focus();
+															}
+														}}
+														onClick={(event) => {
+															document.getElementById('second-answer').select()
+														}}
+														onKeyDown={(event) => {
+															onClickStartSelectSound()
+															if (event.key === "Backspace") {
+																if (secondAnswer == "") {
+																	document.getElementById('first-answer').focus();
+																} else {
+																	setSecondAnswer("")
+																}
+															}
+														}}
+														onFocus={(event) => {
+															document.getElementById('second-answer').select()
+														}}
+														maxLength={1}
+														className={`bg-white outline-none focus:outline-primary text-black text-xl rounded-lg  w-full text-center ${secondAnswer.length == 1 && `outline-primary`}`}
+														placeholder={"-"}
+													/>
+												</div>
+
+												<div className='bg-tertiary w-14 h-14 flex place-content-center'>
+													<input
+														id='third-answer'
+														autoComplete="off"
+														type="text"
+														value={thirdAnswer.toUpperCase()}
+														onChange={(event) => {
+															setThirdAnswer(event.target.value.toLowerCase().slice(0, 1))
+															if (event.target.value == "") {
+																document.getElementById('third-answer').focus();
+															} else {
+																document.getElementById('fourth-answer').focus();
+															}
+														}}
+														onClick={(event) => {
+															document.getElementById('third-answer').select()
+														}}
+														onKeyDown={(event) => {
+															onClickStartSelectSound()
+															if (event.key === "Backspace") {
+																if (thirdAnswer == "") {
+																	document.getElementById('second-answer').focus();
+																} else {
+																	setThirdAnswer("")
+																}
+															}
+														}}
+														onFocus={(event) => {
+															document.getElementById('third-answer').select()
+														}}
+														maxLength={1}
+														className={`bg-white outline-none focus:outline-primary text-black text-xl rounded-lg  w-full text-center ${thirdAnswer.length == 1 && `outline-primary`}`}
+														placeholder={"-"}
+													/>
+												</div>
+
+												<div className='bg-tertiary w-14 h-14 flex place-content-center'>
+													<input
+														id='fourth-answer'
+														autoComplete="off"
+														type="text"
+														value={fourthAnswer.toUpperCase()}
+														onChange={(event) => {
+															setFourthAnswer(event.target.value.toLowerCase().slice(0, 1))
+															if (event.target.value == "") {
+																document.getElementById('fourth-answer').focus();
+															} else {
+																document.getElementById('fifth-answer').focus();
+															}
+														}}
+														onClick={(event) => {
+															document.getElementById('fourth-answer').select()
+														}}
+														onKeyDown={(event) => {
+															onClickStartSelectSound()
+															if (event.key === "Backspace") {
+																if (fourthAnswer == "") {
+																	document.getElementById('third-answer').focus();
+																} else {
+																	setFourthAnswer("")
+																}
+															}
+														}}
+														onFocus={(event) => {
+															document.getElementById('fourth-answer').select()
+														}}
+														maxLength={1}
+														className={`bg-white outline-none focus:outline-primary text-black text-xl rounded-lg  w-full text-center ${fourthAnswer.length == 1 && `outline-primary`}`}
+														placeholder={"-"}
+													/>
+												</div>
+
+												<div className='bg-tertiary w-14 h-14 flex place-content-center'>
+													<input
+														id='fifth-answer'
+														autoComplete="off"
+														type="text"
+														value={fifthAnswer.toUpperCase()}
+														onChange={(event) => {
+															setFifthAnswer(event.target.value.toLowerCase().slice(0, 1))
+															if (event.target.value == "") {
+																document.getElementById('fifth-answer').focus();
+															} else {
+																document.getElementById('sixth-answer').focus();
+															}
+														}}
+														onClick={(event) => {
+															document.getElementById('fifth-answer').select()
+														}}
+														onKeyDown={(event) => {
+															onClickStartSelectSound()
+															if (event.key === "Backspace") {
+																if (fifthAnswer == "") {
+																	document.getElementById('fourth-answer').focus();
+																} else {
+																	setFifthAnswer("")
+																}
+															}
+														}}
+														onFocus={(event) => {
+															document.getElementById('fifth-answer').select()
+														}}
+														maxLength={1}
+														className={`bg-white outline-none focus:outline-primary text-black text-xl rounded-lg  w-full text-center ${fifthAnswer.length == 1 && `outline-primary`}`}
+														placeholder={"-"}
+													/>
+												</div>
+
+												<div className='bg-tertiary w-14 h-14 flex place-content-center'>
+													<input
+														id='sixth-answer'
+														autoComplete="off"
+														type="text"
+														value={sixthAnswer.toUpperCase()}
+														onChange={(event) => {
+															setSixthAnswer(event.target.value.toLowerCase().slice(0, 1))
+															if (event.target.value == "") {
+																document.getElementById('sixth-answer').focus();
+															} else {
+																document.getElementById('seventh-answer').focus();
+															}
+														}}
+														onClick={(event) => {
+															document.getElementById('sixth-answer').select()
+														}}
+														onKeyDown={(event) => {
+															onClickStartSelectSound()
+															if (event.key === "Backspace") {
+																if (sixthAnswer == "") {
+																	document.getElementById('fifth-answer').focus();
+																} else {
+																	setSixthAnswer("")
+																}
+															}
+														}}
+														onFocus={(event) => {
+															document.getElementById('sixth-answer').select()
+														}}
+														maxLength={1}
+														className={`bg-white outline-none focus:outline-primary text-black text-xl rounded-lg  w-full text-center ${sixthAnswer.length == 1 && `outline-primary`}`}
+														placeholder={"-"}
+													/>
+												</div>
+
+												<div className='bg-tertiary w-14 h-14 flex place-content-center'>
+													<input
+														id='seventh-answer'
+														autoComplete="off"
+														type="text"
+														value={seventhAnswer.toUpperCase()}
+														onChange={(event) => {
+															setSeventhAnswer(event.target.value.toLowerCase().slice(0, 1))
+															if (event.target.value == "") {
+																document.getElementById('seventh-answer').focus();
+															} else {
+																document.getElementById('eighth-answer').focus();
+															}
+														}}
+														onClick={(event) => {
+															document.getElementById('seventh-answer').select()
+														}}
+														onKeyDown={(event) => {
+															onClickStartSelectSound()
+															if (event.key === "Backspace") {
+																if (seventhAnswer == "") {
+																	document.getElementById('sixth-answer').focus();
+																} else {
+																	setSeventhAnswer("")
+																}
+															}
+														}}
+														onFocus={(event) => {
+															document.getElementById('seventh-answer').select()
+														}}
+														maxLength={1}
+														className={`bg-white outline-none focus:outline-primary text-black text-xl rounded-lg  w-full text-center ${seventhAnswer.length == 1 && `outline-primary`}`}
+														placeholder={"-"}
+													/>
+												</div>
+												
+												<div className='bg-tertiary w-14 h-14 flex place-content-center'>
+													<input
+														id='eighth-answer'
+														autoComplete="off"
+														type="text"
+														value={eighthAnswer.toUpperCase()}
+														onChange={(event) => {
+															setEighthAnswer(event.target.value.toLowerCase().slice(0, 1))
+															if (event.target.value == "") {
+																document.getElementById('eighth-answer').focus();
+															} else {
+																document.getElementById('eighth-answer').blur();
+															}
+														}}
+														onClick={(event) => {
+															document.getElementById('eighth-answer').select()
+														}}
+														onKeyDown={(event) => {
+															onClickStartSelectSound()
+															if (event.key === "Backspace") {
+																if (eighthAnswer == "") {
+																	document.getElementById('seventh-answer').focus();
+																} else {
+																	setEighthAnswer("")
+																}
+															}
+														}}
+														onFocus={(event) => {
+															document.getElementById('eighth-answer').select()
+														}}
+														maxLength={1}
+														className={`bg-white outline-none focus:outline-primary text-black text-xl rounded-lg  w-full text-center ${eighthAnswer.length == 1 && `outline-primary`}`}
+														placeholder={"-"}
+													/>
+												</div>
+
+											</div>
+
+										</div>
+
+									</div>
+									<div className='text-base md:text-xl p-10 pt-0 font-black'>Isilah jawaban yang sesuai, kalahkan musuh dan kalian akan menemukan berlian nya !</div>
+								</div>
+							</div>
+							<div className='flex flex-col pt-7 justify-between'>
+								<button
+									className={`text-black text-lg md:text-xl w-full font-black bg-primary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black scale-100 duration-500 ${firstAnswer + secondAnswer + thirdAnswer + fourthAnswer + fifthAnswer + sixthAnswer + seventhAnswer + eighthAnswer == "alveolus" || firstAnswer.length == 1 && secondAnswer.length == 1 && thirdAnswer.length == 1 && fourthAnswer.length == 1 && fifthAnswer.length == 1 && sixthAnswer.length == 1 && seventhAnswer.length == 1 && eighthAnswer.length == 1 && firstAnswer + secondAnswer + thirdAnswer + fourthAnswer + fifthAnswer + sixthAnswer + seventhAnswer + eighthAnswer != "alveolus" ? `mb-7` : `mb-16 sm:mb-7`}`}
+									onClick={(event) => {
+										onClickStartPlaySound()
+										setFirstAnswer("")
+										setSecondAnswer("")
+										setThirdAnswer("")
+										setFourthAnswer("")
+										setFifthAnswer("")
+										setSixthAnswer("")
+										setSeventhAnswer("")
+										setEighthAnswer("")
+										setStep("menu")
+									}}
+								>
+									🥳 Menu Utama
+								</button>
+								{firstAnswer + secondAnswer + thirdAnswer + fourthAnswer + fifthAnswer + sixthAnswer + seventhAnswer + eighthAnswer == "alveolus" &&
+									<button
+										className='text-black text-lg md:text-xl w-full font-black mb-16 sm:mb-7 bg-secondary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black scale-100 duration-500'
+										onClick={(event) => {
+											onClickStartPlaySound()
+											setFirstAnswer("")
+											setSecondAnswer("")
+											setThirdAnswer("")
+											setFourthAnswer("")
+											setFifthAnswer("")
+											setSixthAnswer("")
+											setSeventhAnswer("")
+											setEighthAnswer("")
+											setStep("latihan-4")
+										}}
+									>
+										🎮 Lawan Bos
+									</button>
+								}
+								{firstAnswer.length == 1 && secondAnswer.length == 1 && thirdAnswer.length == 1 && fourthAnswer.length == 1 && fifthAnswer.length == 1 && sixthAnswer.length == 1 && seventhAnswer.length == 1 && eighthAnswer.length == 1 && firstAnswer + secondAnswer + thirdAnswer + fourthAnswer + fifthAnswer + sixthAnswer + seventhAnswer + eighthAnswer != "alveolus" &&
+									<button
+										className='text-black text-lg md:text-xl w-full font-black mb-16 sm:mb-7 bg-secondary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black scale-100 duration-500'
+										onClick={(event) => {
+											onClickStartPlaySound()
+											setFirstAnswer("")
+											setSecondAnswer("")
+											setThirdAnswer("")
+											setFourthAnswer("")
+											setFifthAnswer("")
+											setSixthAnswer("")
+											setSeventhAnswer("")
+											setEighthAnswer("")
+										}}
+									>
+										🎮 Coba Lagi
+									</button>
+								}
+							</div>
+						</>
+					: step == "latihan-4" ?
+						<>
+							<div className="text-5xl font-black">
+								<div className='text-7xl font-black scale-105 duration-500'>💪</div>
+								<div className='text-5xl font-black'>Latihan</div>	
+								<div className="text-xl font-black scale-100 duration-500">Evaluasi Pemahaman</div>
+							</div>
+							<div className='grid-rows-1 w-fit grid gap-10 mt-7 scale-100 duration-500'>
+								<div className='max-w-[808px] h-fit bg-tertiary rounded-2xl shadow-2xl border border-solid border-b-8 border-black'>
+
+									{/* jawaban benar */}
+									{firstAnswer + secondAnswer + thirdAnswer + fourthAnswer + fifthAnswer + sixthAnswer + seventhAnswer == "fegbadc" &&
+										<div className='absolute w-full h-full bg-secondary/50 z-10 rounded-2xl shadow-2xl backdrop-blur-sm border border-solid border-b-8 border-black'>
+											<div className='grid h-full place-items-center'>
+												<div className='flex flex-col items-center'>
+													<div className='text-9xl animate-[float-up_1s_forwards]'>
+														🎉
+													</div>
+													<div className='text-base md:text-2xl font-black text-green-500'>
+														{firstAnswer + secondAnswer + thirdAnswer + fourthAnswer + fifthAnswer + sixthAnswer + seventhAnswer}
+													</div>
+													<div className='text-base md:text-2xl font-black text-gray-400'>
+														Selamat Jawaban Benar
+													</div>
+													<div className='text-base md:text-2xl font-black text-gray-600'>
+														Level Berikutnya Menantimu
+													</div>
+												</div>
+											</div>
+										</div>
+									}
+
+									{firstAnswer.length == 1 && secondAnswer.length == 1 && thirdAnswer.length == 1 && fourthAnswer.length == 1 && fifthAnswer.length == 1 && sixthAnswer.length == 1 && seventhAnswer.length == 1 && firstAnswer + secondAnswer + thirdAnswer + fourthAnswer + fifthAnswer + sixthAnswer + seventhAnswer != "fegbadc" &&
+										<div className='absolute w-full h-full bg-secondary/50 z-10 rounded-2xl shadow-2xl backdrop-blur-sm border border-solid border-b-8 border-black'>
+											<div className='grid h-full place-items-center'>
+												<div className='flex flex-col items-center'>
+													<div className='text-9xl animate-bounce'>
+														😿
+													</div>
+													<div className='text-base md:text-2xl font-black text-red-500'>
+														{firstAnswer + secondAnswer + thirdAnswer + fourthAnswer + fifthAnswer + sixthAnswer + seventhAnswer}
+													</div>
+													<div className='text-base md:text-2xl font-black text-gray-400'>
+														Maaf Jawaban Salah
+													</div>
+													<div className='text-base md:text-2xl font-black text-gray-600'>
+														Jangan Putus Asa, Ayo Coba Lagi
+													</div>
+												</div>
+											</div>
+										</div>
+									}
+
+									<div className='w-full'>
+
+										<div className='w-fit'>
+
+											<div className='flex text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl p-10 w-full justify-between'>
+												<div className=' -scale-x-100 animate-pulse'>🏃</div>
+												<div className='flex place-items-center place-content-center'><div className='absolute text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl text-red-600 font-black'>X</div>🐛</div>
+												<div className='flex place-items-center place-content-center'><div className='absolute text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl text-red-600 font-black'>X</div>🦗</div>
+												<div className='animate-bounce'>🐞</div>
+												<div className=' animate-pulse'>💎</div>
+											</div>
+											<div className='p-10 pt-0 pb-0 h-full'>
+												<div className='text-base md:text-xl font-black'>
+													Level 3 : Melawan Raja Kumbang
+												</div>
+
+												<div className='mt-7 text-base md:text-xl font-black'>
+													Urutkan sistem pernapasan pada manusia dengan baik dan benar sesuai dengan apa yang telah kalian pelajari !
+												</div>
+												<div className='mt-7 text-base md:text-xl font-black'>
+													[a] bronkus, [b] trakea, [c] alveolus, [d] bronkiolus
+												</div>
+												<div className='mt-0 text-base md:text-xl font-black'>
+													[e] faring, [f] hidung, [g] laring
+												</div>
+											</div>
+
+										</div>
+
+										<div className='w-full place-content-center flex'>
+
+											<div className='flex flex-wrap place-content-center w-fit p-10 gap-5 scale-100 duration-500 '>
+												<div className='bg-tertiary w-14 h-14 flex place-content-center'>
+													<input
+														id='first-answer'
+														autoComplete="off"
+														type="text"
+														value={firstAnswer.toUpperCase()}
+														onChange={(event) => {
+															setFirstAnswer(event.target.value.toLowerCase().slice(0, 1))
+															if (event.target.value == "") {
+																document.getElementById('first-answer').focus();
+															} else {
+																document.getElementById('second-answer').focus();
+															}
+														}}
+														onClick={(event) => {
+															document.getElementById('first-answer').select()
+														}}
+														onKeyDown={(event) => {
+															onClickStartSelectSound()
+															if (event.key === "Backspace") {
+																if (firstAnswer == "") {
+																	document.getElementById('first-answer').focus();
+																} else {
+																	setFirstAnswer("")
+																}
+															}
+														}}
+														onFocus={(event) => {
+															document.getElementById('first-answer').select()
+														}}
+														maxLength={1}
+														className={`bg-white outline-none focus:outline-primary text-black text-xl rounded-lg  w-full text-center ${firstAnswer.length == 1 && `outline-primary`}`}
+														placeholder={"-"}
+													/>
+												</div>
+
+												<div className='bg-tertiary w-14 h-14 flex place-content-center'>
+													<input
+														id='second-answer'
+														autoComplete="off"
+														type="text"
+														value={secondAnswer.toUpperCase()}
+														onChange={(event) => {
+															setSecondAnswer(event.target.value.toLowerCase().slice(0, 1))
+															if (event.target.value == "") {
+																document.getElementById('second-answer').focus();
+															} else {
+																document.getElementById('third-answer').focus();
+															}
+														}}
+														onClick={(event) => {
+															document.getElementById('second-answer').select()
+														}}
+														onKeyDown={(event) => {
+															onClickStartSelectSound()
+															if (event.key === "Backspace") {
+																if (secondAnswer == "") {
+																	document.getElementById('first-answer').focus();
+																} else {
+																	setSecondAnswer("")
+																}
+															}
+														}}
+														onFocus={(event) => {
+															document.getElementById('second-answer').select()
+														}}
+														maxLength={1}
+														className={`bg-white outline-none focus:outline-primary text-black text-xl rounded-lg  w-full text-center ${secondAnswer.length == 1 && `outline-primary`}`}
+														placeholder={"-"}
+													/>
+												</div>
+
+												<div className='bg-tertiary w-14 h-14 flex place-content-center'>
+													<input
+														id='third-answer'
+														autoComplete="off"
+														type="text"
+														value={thirdAnswer.toUpperCase()}
+														onChange={(event) => {
+															setThirdAnswer(event.target.value.toLowerCase().slice(0, 1))
+															if (event.target.value == "") {
+																document.getElementById('third-answer').focus();
+															} else {
+																document.getElementById('fourth-answer').focus();
+															}
+														}}
+														onClick={(event) => {
+															document.getElementById('third-answer').select()
+														}}
+														onKeyDown={(event) => {
+															onClickStartSelectSound()
+															if (event.key === "Backspace") {
+																if (thirdAnswer == "") {
+																	document.getElementById('second-answer').focus();
+																} else {
+																	setThirdAnswer("")
+																}
+															}
+														}}
+														onFocus={(event) => {
+															document.getElementById('third-answer').select()
+														}}
+														maxLength={1}
+														className={`bg-white outline-none focus:outline-primary text-black text-xl rounded-lg  w-full text-center ${thirdAnswer.length == 1 && `outline-primary`}`}
+														placeholder={"-"}
+													/>
+												</div>
+
+												<div className='bg-tertiary w-14 h-14 flex place-content-center'>
+													<input
+														id='fourth-answer'
+														autoComplete="off"
+														type="text"
+														value={fourthAnswer.toUpperCase()}
+														onChange={(event) => {
+															setFourthAnswer(event.target.value.toLowerCase().slice(0, 1))
+															if (event.target.value == "") {
+																document.getElementById('fourth-answer').focus();
+															} else {
+																document.getElementById('fifth-answer').focus();
+															}
+														}}
+														onClick={(event) => {
+															document.getElementById('fourth-answer').select()
+														}}
+														onKeyDown={(event) => {
+															onClickStartSelectSound()
+															if (event.key === "Backspace") {
+																if (fourthAnswer == "") {
+																	document.getElementById('third-answer').focus();
+																} else {
+																	setFourthAnswer("")
+																}
+															}
+														}}
+														onFocus={(event) => {
+															document.getElementById('fourth-answer').select()
+														}}
+														maxLength={1}
+														className={`bg-white outline-none focus:outline-primary text-black text-xl rounded-lg  w-full text-center ${fourthAnswer.length == 1 && `outline-primary`}`}
+														placeholder={"-"}
+													/>
+												</div>
+
+												<div className='bg-tertiary w-14 h-14 flex place-content-center'>
+													<input
+														id='fifth-answer'
+														autoComplete="off"
+														type="text"
+														value={fifthAnswer.toUpperCase()}
+														onChange={(event) => {
+															setFifthAnswer(event.target.value.toLowerCase().slice(0, 1))
+															if (event.target.value == "") {
+																document.getElementById('fifth-answer').focus();
+															} else {
+																document.getElementById('sixth-answer').focus();
+															}
+														}}
+														onClick={(event) => {
+															document.getElementById('fifth-answer').select()
+														}}
+														onKeyDown={(event) => {
+															onClickStartSelectSound()
+															if (event.key === "Backspace") {
+																if (fifthAnswer == "") {
+																	document.getElementById('fourth-answer').focus();
+																} else {
+																	setFifthAnswer("")
+																}
+															}
+														}}
+														onFocus={(event) => {
+															document.getElementById('fifth-answer').select()
+														}}
+														maxLength={1}
+														className={`bg-white outline-none focus:outline-primary text-black text-xl rounded-lg  w-full text-center ${fifthAnswer.length == 1 && `outline-primary`}`}
+														placeholder={"-"}
+													/>
+												</div>
+
+												<div className='bg-tertiary w-14 h-14 flex place-content-center'>
+													<input
+														id='sixth-answer'
+														autoComplete="off"
+														type="text"
+														value={sixthAnswer.toUpperCase()}
+														onChange={(event) => {
+															setSixthAnswer(event.target.value.toLowerCase().slice(0, 1))
+															if (event.target.value == "") {
+																document.getElementById('sixth-answer').focus();
+															} else {
+																document.getElementById('seventh-answer').focus();
+															}
+														}}
+														onClick={(event) => {
+															document.getElementById('sixth-answer').select()
+														}}
+														onKeyDown={(event) => {
+															onClickStartSelectSound()
+															if (event.key === "Backspace") {
+																if (sixthAnswer == "") {
+																	document.getElementById('fifth-answer').focus();
+																} else {
+																	setSixthAnswer("")
+																}
+															}
+														}}
+														onFocus={(event) => {
+															document.getElementById('sixth-answer').select()
+														}}
+														maxLength={1}
+														className={`bg-white outline-none focus:outline-primary text-black text-xl rounded-lg  w-full text-center ${sixthAnswer.length == 1 && `outline-primary`}`}
+														placeholder={"-"}
+													/>
+												</div>
+
+												<div className='bg-tertiary w-14 h-14 flex place-content-center'>
+													<input
+														id='seventh-answer'
+														autoComplete="off"
+														type="text"
+														value={seventhAnswer.toUpperCase()}
+														onChange={(event) => {
+															setSeventhAnswer(event.target.value.toLowerCase().slice(0, 1))
+															if (event.target.value == "") {
+																document.getElementById('seventh-answer').focus();
+															} else {
+																document.getElementById('seventh-answer').focus();
+															}
+														}}
+														onClick={(event) => {
+															document.getElementById('seventh-answer').select()
+														}}
+														onKeyDown={(event) => {
+															onClickStartSelectSound()
+															if (event.key === "Backspace") {
+																if (seventhAnswer == "") {
+																	document.getElementById('sixth-answer').focus();
+																} else {
+																	setSeventhAnswer("")
+																}
+															}
+														}}
+														onFocus={(event) => {
+															document.getElementById('seventh-answer').select()
+														}}
+														maxLength={1}
+														className={`bg-white outline-none focus:outline-primary text-black text-xl rounded-lg  w-full text-center ${seventhAnswer.length == 1 && `outline-primary`}`}
+														placeholder={"-"}
+													/>
+												</div>
+
+											</div>
+
+										</div>
+
+									</div>
+									<div className='text-base md:text-xl p-10 pt-0 font-black'>Selangkah lagi, berlian menanti mu !</div>
+								</div>
+							</div>
+							<div className='flex flex-col pt-7 justify-between'>
+								<button
+									className={`text-black text-lg md:text-xl w-full font-black bg-primary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black scale-100 duration-500 ${firstAnswer + secondAnswer + thirdAnswer + fourthAnswer + fifthAnswer + sixthAnswer + seventhAnswer == "fegbadc" || firstAnswer.length == 1 && secondAnswer.length == 1 && thirdAnswer.length == 1 && fourthAnswer.length == 1 && fifthAnswer.length == 1 && sixthAnswer.length == 1 && seventhAnswer.length == 1 && firstAnswer + secondAnswer + thirdAnswer + fourthAnswer + fifthAnswer + sixthAnswer + seventhAnswer != "fegbadc" ? `mb-7` : `mb-16 sm:mb-7`}`}
+									onClick={(event) => {
+										onClickStartPlaySound()
+										setFirstAnswer("")
+										setSecondAnswer("")
+										setThirdAnswer("")
+										setFourthAnswer("")
+										setFifthAnswer("")
+										setSixthAnswer("")
+										setSeventhAnswer("")
+										setEighthAnswer("")
+										setStep("menu")
+									}}
+								>
+									🥳 Menu Utama
+								</button>
+								{firstAnswer + secondAnswer + thirdAnswer + fourthAnswer + fifthAnswer + sixthAnswer + seventhAnswer == "fegbadc" &&
+									<button
+										className='text-black text-lg md:text-xl w-full font-black mb-16 sm:mb-7 bg-secondary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black scale-100 duration-500'
+										onClick={(event) => {
+											marioCompleteAudio.play()
+											setFirstAnswer("")
+											setSecondAnswer("")
+											setThirdAnswer("")
+											setFourthAnswer("")
+											setFifthAnswer("")
+											setSixthAnswer("")
+											setSeventhAnswer("")
+											setEighthAnswer("")
+											setStep("latihan-5")
+											setIsBerlianOpened(true)
+										}}
+									>
+										💎 Ambil Berlian
+									</button>
+								}
+								{firstAnswer.length == 1 && secondAnswer.length == 1 && thirdAnswer.length == 1 && fourthAnswer.length == 1 && fifthAnswer.length == 1 && sixthAnswer.length == 1 && seventhAnswer.length == 1 && firstAnswer + secondAnswer + thirdAnswer + fourthAnswer + fifthAnswer + sixthAnswer + seventhAnswer != "fegbadc" &&
+									<button
+										className='text-black text-lg md:text-xl w-full font-black mb-16 sm:mb-7 bg-secondary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black scale-100 duration-500'
+										onClick={(event) => {
+											onClickStartPlaySound()
+											setFirstAnswer("")
+											setSecondAnswer("")
+											setThirdAnswer("")
+											setFourthAnswer("")
+											setFifthAnswer("")
+											setSixthAnswer("")
+											setSeventhAnswer("")
+											setEighthAnswer("")
+										}}
+									>
+										🎮 Coba Lagi
+									</button>
+								}
+							</div>
+						</>
+					: step == "latihan-5" ?
+						<>
+							<div className="text-5xl font-black">
+								<div className='text-7xl font-black scale-105 duration-500'>💪</div>
+								<div className='text-5xl font-black'>Latihan</div>	
+								<div className="text-xl font-black scale-100 duration-500">Evaluasi Pemahaman</div>
+							</div>
+							<div className='grid-rows-1 pb-7 w-full grid gap-10 mt-7 scale-100 duration-500'>
+								<div className='max-w-[808px] h-full bg-tertiary rounded-2xl shadow-2xl border border-solid border-b-8 border-black'>
+
+									<div className='flex text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl p-10 w-full justify-between'>
+										<div className='flex place-items-center place-content-center'><div className='absolute text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl text-red-600 font-black'>X</div>🐛</div>
+										<div className='flex place-items-center place-content-center'><div className='absolute text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl text-red-600 font-black'>X</div>🦗</div>
+										<div className='flex place-items-center place-content-center'><div className='absolute text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl text-red-600 font-black'>X</div>🐞</div>
+										<div className=' -scale-x-100 animate-pulse'>🏃</div>
+										<div 
+											className='flex place-items-center place-content-center cursor-pointer' 
+											onClick={(event) => {
+												marioCompleteAudio.play()
+												setIsBerlianOpened(true)
+											}}
+										>
+											<div className='absolute text-xs text-red-600 font-black'>BARU</div>
+											💎
+										</div>
+									</div>
+									<div className='text-base md:text-xl p-10 pt-0 font-black'>Selamat anda telah menemukan berlian yang hilang, hebat !</div>
+									<div className='text-base md:text-xl p-10 pt-0 font-black'>Terima kasih telah bermain sambil belajar di Melati, mohon maaf jika terdapat kekurangan dan kesalahan.</div>
+									<div className='text-base md:text-xl p-10 pt-0 font-black'>Keberhasilan bukanlah milik orang yang pintar. Keberhasilan adalah kepunyaan mereka yang senantiasa berusaha, B.J. Habibie</div>
+								</div>
+							</div>
+							<div className='flex justify-between'>
+								<button
+									className='text-black text-lg md:text-xl w-full font-black mb-16 sm:mb-7 bg-primary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black scale-100 duration-500'
 									onClick={(event) => {
 										onClickStartPlaySound()
 										setStep("menu")
@@ -929,7 +2232,7 @@ export default function Home() {
 						<>
 							<div className="text-5xl font-black">
 								<div className='text-7xl font-black scale-105 duration-500'>👨‍🏫</div>
-								<div className='text-5xl font-black'>Tentang [1/1]</div>
+								<div className='text-5xl font-black'>Tentang</div>
 								<div className="text-xl font-black scale-100 duration-500">Informasi Kreator</div>
 							</div>
 							<div className='grid-rows-1 pb-7 w-full grid gap-10 mt-7 scale-100 duration-500'>
@@ -939,7 +2242,7 @@ export default function Home() {
 							</div>
 							<div className='flex justify-between'>
 								<button
-									className='text-black text-lg md:text-xl w-full font-black mb-16 md:mb-7 bg-primary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black scale-100 duration-500'
+									className='text-black text-lg md:text-xl w-full font-black mb-16 sm:mb-7 bg-primary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black scale-100 duration-500'
 									onClick={(event) => {
 										onClickStartPlaySound()
 										setStep("menu")
@@ -953,42 +2256,74 @@ export default function Home() {
 							<>
 								<div className="text-5xl font-black">
 								<div className='text-7xl font-black scale-105 duration-500'>📒</div>
-								<div className='text-5xl font-black'>Referensi [1/1]</div>
+								<div className='text-5xl font-black'>Referensi</div>
 								<div className="text-xl font-black scale-100 duration-500">Rujukan Pembuatan</div>
 							</div>
 							<div className='grid-rows-1 pb-7 w-full grid gap-10 mt-7 scale-100 duration-500'>
 								<div className='max-w-[808px] h-full bg-tertiary rounded-2xl shadow-2xl border border-solid border-b-8 border-black'>
 									<div className='text-base md:text-xl p-10 font-black'>Referensi yang digunakan dalam pembuatan multimedia pembelajaran interaktif ini : </div>
 									<div className='text-base md:text-xl p-10 pb-0 pt-0 font-black'>
-										<Link href={"https://pngwing.com"} className='underline' target='_blank' rel="noopener noreferrer">
-											# gambar kartun : pngwing.com
+										# gambar animasi : {" "}
+										<Link href={"https://www.pngwing.com/en/search?q=adventure+time/"} className='underline' target='_blank' rel="noopener noreferrer">
+											pngwing.com
 										</Link>
 									</div>
 									<div className='text-base md:text-xl p-10 pb-0 pt-0 font-black'>
-										<Link href={"https://figma.com"} className='underline' target='_blank' rel="noopener noreferrer">
-											# pattern background dan editing tools : figma.com
+										# pattern background {" "}
+										<Link href={"https://figma.com/community/"} className='underline' target='_blank' rel="noopener noreferrer">
+											figmaCommunity
 										</Link>
 									</div>
 									<div className='text-base md:text-xl p-10 pb-0 pt-0 font-black'>
+										# aplikasi untuk mengedit : {" "}
+										<Link href={"https://figma.com/"} className='underline' target='_blank' rel="noopener noreferrer">
+											figma.com
+										</Link>
+									</div>
+									<div className='text-base md:text-xl p-10 pb-0 pt-0 font-black'>
+										# sumber materi : {" "}
 										<Link href={"#"} className='underline'>
-											# materi : buku sekolah
+											bukuLKSsekolah
 										</Link>
 									</div>
 									<div className='text-base md:text-xl p-10 pb-0 pt-0 font-black'>
-										<Link href={"https://www.youtube.com/"} className='underline' target='_blank' rel="noopener noreferrer">
-											# background musik : youtube.com
+										# background musik : {" "}
+										<Link href={"https://www.youtube.com/results?search_query=background+lagu+anak/"} className='underline' target='_blank' rel="noopener noreferrer">
+											youtube.com
 										</Link>
 									</div>
-									<div className='text-base md:text-xl p-10 pt-0 font-black'>
+									<div className='text-base md:text-xl p-10 pb-0 pt-0 font-black'>
+										# efek musik utama : {" "}
 										<Link href={"https://www.education.com/"} className='underline' target='_blank' rel="noopener noreferrer">
-											# efek musik : education.com
+											 education.com 
+										</Link>
+									</div>
+
+									<div className='text-base md:text-xl pb-0 p-10 pt-0 font-black'>
+										# efek musik tambahan : {" "}
+										<Link href={"https://mario.nintendo.com/"} className='underline' target='_blank' rel="noopener noreferrer">
+											 gameSuperMario
+										</Link>
+									</div>
+
+									<div className='text-base md:text-xl pb-0 p-10 pt-0 font-black'>
+										# kutipan doa : {" "}
+										<Link href={"#"} className='underline' target='_blank' rel="noopener noreferrer">
+											 hadistNabiMuhammadS.A.W.
+										</Link>
+									</div>
+
+									<div className='text-base md:text-xl p-10 pt-0 font-black'>
+										# kutipan motivasi : {" "}
+										<Link href={"#"} className='underline' target='_blank' rel="noopener noreferrer">
+											 B.J.HabibiPresidenR.I.
 										</Link>
 									</div>
 								</div>
 							</div>
 							<div className='flex justify-between'>
 								<button
-									className='text-black text-lg md:text-xl w-full font-black mb-16 md:mb-7 bg-primary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black scale-100 duration-500'
+									className='text-black text-lg md:text-xl w-full font-black mb-16 sm:mb-7 bg-primary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black scale-100 duration-500'
 									onClick={(event) => {
 										onClickStartPlaySound()
 										setStep("menu")
@@ -1033,6 +2368,72 @@ export default function Home() {
 				</div>
 			</div>
 
+			{/* suprize modevaka */}
+			<div  className='w-full'>
+				<div className={`opacity-0 fixed left-0 text-7xl ${isBerlianOpened && `animate-[float-over_7s]`}`}>
+					💎
+				</div>
+				<div className={`opacity-0 fixed left-20 text-5xl ${isBerlianOpened && `animate-[float-over_14s]`}`}>
+					💎
+				</div>
+				<div className={`opacity-0 fixed left-10 text-7xl ${isBerlianOpened && `animate-[float-over_1s]`}`}>
+					💎
+				</div>
+				<div className={`opacity-0 fixed left-20 text-5xl ${isBerlianOpened && `animate-[float-over_4s]`}`}>
+					💎
+				</div>
+				<div className={`opacity-0 fixed left-52 text-5xl ${isBerlianOpened && `animate-[float-over_5s]`}`}>
+					💎
+				</div>
+
+				<div className={`opacity-0 fixed left-96 text-7xl ${isBerlianOpened && `animate-[float-over_14s]`}`}>
+					💎
+				</div>
+				<div className={`opacity-0 fixed left-[400px] text-5xl ${isBerlianOpened && `animate-[float-over_1s]`}`}>
+					💎
+				</div>
+				<div className={`opacity-0 fixed left-[600px] text-7xl ${isBerlianOpened && `animate-[float-over_8s]`}`}>
+					💎
+				</div>
+				<div className={`opacity-0 fixed left-80 text-5xl ${isBerlianOpened && `animate-[float-over_3s]`}`}>
+					💎
+				</div>
+				<div className={`opacity-0 fixed left-[700] text-5xl ${isBerlianOpened && `animate-[float-over_2s]`}`}>
+					💎
+				</div>
+
+				<div className={`opacity-0 fixed right-0 text-7xl ${isBerlianOpened && `animate-[float-over_5s]`}`}>
+					💎
+				</div>
+				<div className={`opacity-0 fixed right-20 text-5xl ${isBerlianOpened && `animate-[float-over_14s]`}`}>
+					💎
+				</div>
+				<div className={`opacity-0 fixed right-10 text-7xl ${isBerlianOpened && `animate-[float-over_1s]`}`}>
+					💎
+				</div>
+				<div className={`opacity-0 fixed right-20 text-5xl ${isBerlianOpened && `animate-[float-over_4s]`}`}>
+					💎
+				</div>
+				<div className={`opacity-0 fixed right-60 text-5xl ${isBerlianOpened && `animate-[float-over_2s]`}`}>
+					💎
+				</div>
+
+				<div className={`opacity-0 fixed right-[900px] text-3xl ${isBerlianOpened && `animate-[float-over_5s]`}`}>
+					💎
+				</div>
+				<div className={`opacity-0 fixed right-56 text-5xl ${isBerlianOpened && `animate-[float-over_8s]`}`}>
+					💎
+				</div>
+				<div className={`opacity-0 fixed right-[600px] text-7xl ${isBerlianOpened && `animate-[float-over_7s]`}`}>
+					💎
+				</div>
+				<div className={`opacity-0 fixed right-[800px] text-5xl ${isBerlianOpened && `animate-[float-over_14s]`}`}>
+					💎
+				</div>
+				<div className={`opacity-0 fixed right-[450px] text-5xl ${isBerlianOpened && `animate-[float-over_12s]`}`}>
+					💎
+				</div>
+			</div>
 		</FullScreen>
 	)
 }

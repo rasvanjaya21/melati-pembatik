@@ -31,8 +31,16 @@ module.exports = {
 
 				".shadow-flat": {
 					"box-shadow": "0px 0px 2px rgb(217,217,217)"
-				}
+				},
 
+				'.flip-horizontal': {
+					'--transform-scale-x': '-1',
+				},
+
+				'.flip-vertical': {
+					'--transform-scale-y': '-1',
+				}
+				
 			})
 		})
 	],
