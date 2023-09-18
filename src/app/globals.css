@@ -3,14 +3,26 @@
 @tailwind utilities;
 
 :root {
-	--background-start-rgb: 98, 178, 243;
-	--background-end-rgb: 193, 242, 229;
 	--color-transparent: #FFFFFF00;
+}
+
+:fullscreen {
+	color: black;
+	background: url("/images/background.webp");
+	background-position: top;
+	background-attachment: fixed;
+	background-size: cover;
+	background-repeat: no-repeat;
+	user-select: none;
+}
+
+::-webkit-scrollbar {
+  width: 0px;
 }
 
 body {
 	color: black;
-	background: url("/background.webp");
+	background: url("/images/background.webp");
 	background-position: top;
 	background-attachment: fixed;
 	background-size: cover;
@@ -19,23 +31,24 @@ body {
 	-webkit-tap-highlight-color: var(--color-transparent);
 }
 
-:fullscreen {
-	color: black;
-	background: url("/background.webp");
-	background-position: top;
-	background-attachment: fixed;
-	background-size: cover;
-	background-repeat: no-repeat;
-	user-select: none;
-}
-
 @keyframes float-up {
   from {
-    transform: translateY(100%);
+    transform: translateY(50%);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(-0%);
+    opacity: 1;
+  }
+}
+
+@keyframes float-down {
+  from {
+    transform: translateY(-50%);
     opacity: 0;
   }
   to {
-    transform: translateY(-10%);
+    transform: translateY(-0%);
     opacity: 1;
   }
 }
@@ -43,7 +56,7 @@ body {
 @keyframes float-over {
   from {
     transform: translateY(100%);
-    opacity: 0.5;
+    opacity: 0;
   }
   to {
     transform: translateY(-200vh);

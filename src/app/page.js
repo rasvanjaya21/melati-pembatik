@@ -1,29 +1,28 @@
 "use client"
 
-import Image from 'next/image'
-import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react'
-import { FullScreen, useFullScreenHandle } from "react-full-screen";
-import Tilt from 'react-parallax-tilt';
+import { FullScreen, useFullScreenHandle } from "react-full-screen"
+import Tilt from 'react-parallax-tilt'
+import Link from 'next/link'
 
 export default function Home() {
 
-	const fullScreenHandler = useFullScreenHandle();
-	const bumperVideoRef = useRef();
+	const fullScreenHandler = useFullScreenHandle()
+	const bumperVideoRef = useRef()
 
-	const [step, setStep] = useState("welcome");
-	const [mainAudio, setMainAudio] = useState(null);
-	const [selectAudio, setSelectAudio] = useState(null);
-	const [backAudio, setBackAudio] = useState(null);
-	const [startAudio, setStartAudio] = useState(null);
-	const [menuAudio, setMenuAudio] = useState(null);
+	const [step, setStep] = useState("welcome")
+	const [mainAudio, setMainAudio] = useState(null)
+	const [selectAudio, setSelectAudio] = useState(null)
+	const [backAudio, setBackAudio] = useState(null)
+	const [startAudio, setStartAudio] = useState(null)
+	const [menuAudio, setMenuAudio] = useState(null)
 	const [isBumperVideoPlaying, setIsBumperVideoPlaying] = useState(false)
 	const [isFullscreeen, setIsFullscreeen] = useState(false)
 	const [isMainAudioPlaying, setIsMainAudioPlaying] = useState(false)
 
-	const [marioFailAudio, setMarioFailAudio] = useState(null);
-	const [marioClearAudio, setMarioClearAudio] = useState(null);
-	const [marioCompleteAudio, setMarioCompleteAudio] = useState(null);
+	const [marioFailAudio, setMarioFailAudio] = useState(null)
+	const [marioClearAudio, setMarioClearAudio] = useState(null)
+	const [marioCompleteAudio, setMarioCompleteAudio] = useState(null)
 
 	const [firstAnswer, setFirstAnswer] = useState("")
 	const [secondAnswer, setSecondAnswer] = useState("")
@@ -45,71 +44,17 @@ export default function Home() {
 
 	const [isBerlianOpened, setIsBerlianOpened] = useState(false)
 
-	useEffect(() => {
-		window.scrollTo({
-			top: 0,
-			behavior: 'smooth'
-		});
-	}, [step])
-	
-	useEffect(() => {
-		setTimeout(() => { 
-			if (isBerlianOpened) {
-				setIsBerlianOpened(false)
-			}
-		 }, 5000)
-	}, [isBerlianOpened])
-
-	useEffect(() => {
-
-		setMainAudio(new Audio("/backsound.mp3"))
-		setSelectAudio(new Audio("/select.mp3"))
-		setBackAudio(new Audio("/back.mp3"))
-		setStartAudio(new Audio("/start.mp3"))
-		setMenuAudio(new Audio("/menu.mp3"))
-
-		setMarioFailAudio(new Audio("/mario-fail.mp3"))
-		setMarioClearAudio(new Audio("/mario-clear.mp3"))
-		setMarioCompleteAudio(new Audio("/mario-complete.mp3"))
-
-	}, [])
-
-	useEffect(() => {
-		if (firstAnswer + secondAnswer + thirdAnswer + fourthAnswer + fifthAnswer + sixthAnswer == "trakea" && step == "latihan-2") {
-			marioClearAudio.play()
-		}
-
-		if (firstAnswer.length == 1 && secondAnswer.length == 1 && thirdAnswer.length == 1 && fourthAnswer.length == 1 && fifthAnswer.length == 1 && sixthAnswer.length == 1 && firstAnswer + secondAnswer + thirdAnswer + fourthAnswer + fifthAnswer + sixthAnswer != "trakea" && step == "latihan-2") {
-			marioFailAudio.play()
-		}
-
-		if (firstAnswer + secondAnswer + thirdAnswer + fourthAnswer + fifthAnswer + sixthAnswer + seventhAnswer + eighthAnswer == "alveolus" && step == "latihan-3") {
-			marioClearAudio.play()
-		}
-
-		if (firstAnswer.length == 1 && secondAnswer.length == 1 && thirdAnswer.length == 1 && fourthAnswer.length == 1 && fifthAnswer.length == 1 && sixthAnswer.length == 1 && seventhAnswer.length == 1 && eighthAnswer.length == 1 && firstAnswer + secondAnswer + thirdAnswer + fourthAnswer + fifthAnswer + sixthAnswer + seventhAnswer + eighthAnswer != "alveolus" && step == "latihan-3") {
-			 marioFailAudio.play()
-		}
-
-		if (firstAnswer + secondAnswer + thirdAnswer + fourthAnswer + fifthAnswer + sixthAnswer + seventhAnswer == "fegbadc" && step == "latihan-4") {
-			marioClearAudio.play()
-		}
-
-		if (firstAnswer.length == 1 && secondAnswer.length == 1 && thirdAnswer.length == 1 && fourthAnswer.length == 1 && fifthAnswer.length == 1 && sixthAnswer.length == 1 && seventhAnswer.length == 1 && firstAnswer + secondAnswer + thirdAnswer + fourthAnswer + fifthAnswer + sixthAnswer + seventhAnswer != "fegbadc" && step == "latihan-4") {
-			marioFailAudio.play()
-		}
-
-	}, [firstAnswer, secondAnswer, thirdAnswer, fourthAnswer, fifthAnswer, sixthAnswer, seventhAnswer, eighthAnswer, marioFailAudio, marioClearAudio, step])
+	const [isBottomPage, setIsBottomPage] = useState(false)
 
 	function handleBumperVideoPlay() {
-		bumperVideoRef.current.play();
-		setIsBumperVideoPlaying(true);
-	};
+		bumperVideoRef.current.play()
+		setIsBumperVideoPlaying(true)
+	}
 
 	function handleBumperVideoPause() {
-		bumperVideoRef.current.pause();
+		bumperVideoRef.current.pause()
 		setIsBumperVideoPlaying(false)
-	};
+	}
 
 	function onClickStartMainSound() {
 		setIsMainAudioPlaying(true)
@@ -139,75 +84,185 @@ export default function Home() {
 		menuAudio.play()
 	}
 
+	function scrollToTop() {
+		setIsBottomPage(false)
+		window.scrollTo({
+			top: 0,
+			behavior: 'smooth'
+		})
+	}
+
+	function scrollToBottom() {
+		setIsBottomPage(true)
+		window.scrollTo({
+			top: document.documentElement.scrollHeight,
+			behavior: 'smooth'
+		})
+	}
+
+	const [isAtTop, setIsAtTop] = useState(true)
+	const [isAtBottom, setIsAtBottom] = useState(false)
+
+	function handleScroll() {
+		const scrollTop = window.scrollY
+		const scrollHeight = document.documentElement.scrollHeight
+		const clientHeight = document.documentElement.clientHeight
+
+		// Check if at the top of the page
+		setIsAtTop(scrollTop === 0)
+
+		// Check if at the bottom of the page
+		setIsAtBottom(scrollTop + clientHeight === scrollHeight)
+	}
+
+	useEffect(() => {
+
+		window.addEventListener('scroll', handleScroll)
+
+		return () => { window.removeEventListener('scroll', handleScroll) }
+
+	}, [])
+	
+	useEffect(() => {
+		scrollToTop()
+	}, [step])
+	
+	useEffect(() => {
+		setTimeout(() => { 
+			if (isBerlianOpened) {
+				setIsBerlianOpened(false)
+			}
+		 }, 5000)
+	}, [isBerlianOpened])
+
+	useEffect(() => {
+
+		setMainAudio(new Audio("/sounds/backsound.mp3"))
+		setSelectAudio(new Audio("/sounds/select.mp3"))
+		setBackAudio(new Audio("/sounds/back.mp3"))
+		setStartAudio(new Audio("/sounds/start.mp3"))
+		setMenuAudio(new Audio("/sounds/menu.mp3"))
+
+		setMarioFailAudio(new Audio("/sounds/mario-fail.mp3"))
+		setMarioClearAudio(new Audio("/sounds/mario-clear.mp3"))
+		setMarioCompleteAudio(new Audio("/sounds/mario-complete.mp3"))
+
+	}, [])
+
+	useEffect(() => {
+		
+		if (firstAnswer + secondAnswer + thirdAnswer + fourthAnswer + fifthAnswer + sixthAnswer == "trakea" && step == "latihan-2") {
+			marioClearAudio.play()
+		}
+
+		if (firstAnswer.length == 1 && secondAnswer.length == 1 && thirdAnswer.length == 1 && fourthAnswer.length == 1 && fifthAnswer.length == 1 && sixthAnswer.length == 1 && firstAnswer + secondAnswer + thirdAnswer + fourthAnswer + fifthAnswer + sixthAnswer != "trakea" && step == "latihan-2") {
+			marioFailAudio.play()
+		}
+
+		if (firstAnswer + secondAnswer + thirdAnswer + fourthAnswer + fifthAnswer + sixthAnswer + seventhAnswer + eighthAnswer == "alveolus" && step == "latihan-3") {
+			marioClearAudio.play()
+		}
+
+		if (firstAnswer.length == 1 && secondAnswer.length == 1 && thirdAnswer.length == 1 && fourthAnswer.length == 1 && fifthAnswer.length == 1 && sixthAnswer.length == 1 && seventhAnswer.length == 1 && eighthAnswer.length == 1 && firstAnswer + secondAnswer + thirdAnswer + fourthAnswer + fifthAnswer + sixthAnswer + seventhAnswer + eighthAnswer != "alveolus" && step == "latihan-3") {
+			 marioFailAudio.play()
+		}
+
+		if (firstAnswer + secondAnswer + thirdAnswer + fourthAnswer + fifthAnswer + sixthAnswer + seventhAnswer == "fegbadc" && step == "latihan-4") {
+			marioClearAudio.play()
+		}
+
+		if (firstAnswer.length == 1 && secondAnswer.length == 1 && thirdAnswer.length == 1 && fourthAnswer.length == 1 && fifthAnswer.length == 1 && sixthAnswer.length == 1 && seventhAnswer.length == 1 && firstAnswer + secondAnswer + thirdAnswer + fourthAnswer + fifthAnswer + sixthAnswer + seventhAnswer != "fegbadc" && step == "latihan-4") {
+			marioFailAudio.play()
+		}
+
+	}, [firstAnswer, secondAnswer, thirdAnswer, fourthAnswer, fifthAnswer, sixthAnswer, seventhAnswer, eighthAnswer, marioFailAudio, marioClearAudio, step])
+
 	return (
+
 		<FullScreen handle={fullScreenHandler}>
 
 			{/* content screen */}
-			<div className={`flex justify-center h-screen p-10 pt-24 sm:p-24 sm:pt-10 2xl:pt-[90px] ${isFullscreeen && `overflow-auto`}`}>
+			<div className={`flex justify-center h-screen p-10 pt-24 sm:p-24 sm:pt-20 md:pt-8 xl:p-10 ${isFullscreeen && `overflow-auto`}`}>
+
 				<div className="flex flex-col w-full md:w-fit self-start">
 
 					{step == "welcome" ?
+
 						<>
-							<div className='text-7xl font-black scale-105 duration-500'>🌼</div>
-							<div className="text-5xl font-black">Selamat datang di Melati</div>
-							<div className="text-xl font-black">Beranda Multimedia Pembelajaran Interaktif</div>
-							<div className="bg-black h-fit lg:h-[462px] mt-7 items-center justify-center rounded-3xl flex cursor-pointer border border-solid border-b-8 border-black"
+							{/* welcome heading */}
+							<div className='animate-[float-down_0.5s_forwards] duration-500' key={"welcome"}>
+								<div className='text-7xl -ml-3 bg-[url("/icons/blossom.png")] bg-contain bg-no-repeat'>ㅤ</div>
+								<div className="text-5xl font-black">Selamat Datang Di Melati</div>
+								<div className="text-xl font-black">Beranda Website Multimedia Interaktif Melati #PembaTIK2023</div>
+							</div>
+							
+							{/* video content */}
+							<div className=" lg:h-[462px] mt-7 items-center justify-center rounded-3xl flex cursor-pointer"
 								onClick={(event) => {	 
 									isBumperVideoPlaying ? handleBumperVideoPause() : handleBumperVideoPlay()
 								}}
 							>
 
 								{isBumperVideoPlaying ?
-									<div className="absolute w-fit h-fit rounded-full text-white/75 duration-500">
-										<i className='text-7xl font-black bx bx-pause-circle' ></i>
+									<div className="absolute">
+										<div className='text-5xl md:text-6xl leading-none bg-[url("/icons/pause-button.png")] bg-contain bg-no-repeat duration-500'>ㅤ</div>
 									</div>
 									:
-									<div className="absolute w-fit h-fit rounded-full text-white duration-500">
-										<i className='text-7xl font-black bx bx-play-circle' ></i>
+									<div className="absolute">
+										<div className='text-5xl md:text-6xl leading-none bg-[url("/icons/play-button.png")] bg-contain bg-no-repeat duration-500'>ㅤ</div>
 									</div>
 								}
 
 								<video
-									width="805px"
-									className="rounded-3xl"
+									className="bg-black h-full rounded-3xl w-[805px] border border-solid border-b-8 border-black"
 									preload="metadata"
 									ref={bumperVideoRef}
 									onEnded={(event) => {
-										setIsBumperVideoPlaying(false);
+										setIsBumperVideoPlaying(false)
 									}}
 								>
 									<source className="h-fit w-fit" src="https://objectstorage.ap-singapore-1.oraclecloud.com/n/axjwmyaxpzwo/b/bucket-20230915-2013/o/intro-pembatik.mp4" type="video/mp4" />
 								</video>
 							</div>
+							
+							{/* start button */}
 							<button
-								className='text-black text-lg md:text-xl font-black bg-primary p-2 rounded-2xl cursor-pointer mt-7 hover:scale-105 border border-solid border-b-8 border-black scale-100 duration-500'
+								className='animate-[float-up_0.5s] duration-500 flex justify-center text-black text-lg md:text-xl font-black bg-primary p-2 rounded-2xl cursor-pointer mt-7 hover:scale-105 border border-solid border-b-8 border-black'
 								onClick={(event) => {
 									onClickStartPlaySound()
-									setIsBumperVideoPlaying(false);
+									setIsBumperVideoPlaying(false)
 									setStep("menu")
 								}}
+								key={"first-welcome-button"}
 							>
-								🥳 Mulai Petualangan Belajar
+								<div className='text-2xl leading-none bg-[url("/icons/partying-face.png")] bg-contain bg-no-repeat mr-2'>ㅤ</div>
+								Mulai Petualangan Belajar
 							</button>
+
+							{/* readme button */}
 							<button
-								className='text-black text-lg md:text-xl mb-16 sm:mb-7 font-black bg-secondary p-2 rounded-2xl cursor-pointer mt-7 hover:scale-105 border border-solid border-b-8 border-black scale-100 duration-500'
+								className='animate-[float-up_0.5s] duration-500 flex justify-center text-black text-lg md:text-xl mb-16 sm:mb-7 font-black bg-secondary p-2 rounded-2xl cursor-pointer mt-7 hover:scale-105 border border-solid border-b-8 border-black'
 								onClick={(event) => {
 									onClickStartPlaySound()
-									setIsBumperVideoPlaying(false);
+									setIsBumperVideoPlaying(false)
 									setStep("guide-1")
 								}}
+								key={"second-welcome-button"}
 							>
-								🤗 Baca Panduan Penggunaan
+								<div className='text-2xl leading-none bg-[url("/icons/hugging-face.png")] bg-contain bg-no-repeat mr-2'>ㅤ</div>
+								Baca Panduan Penggunaan
 							</button>
 						</>
+
 					: step == "guide-1" ?
+
 						<>
-							<div className="text-5xl font-black scale-100 duration-500">
+							<div className="text-5xl font-black duration-500">
 								<div className='text-7xl font-black scale-105 duration-500'>🤗</div>
 								<div className="text-5xl font-black">Petunjuk Penggunaan</div>
-								<div className="text-xl font-black scale-100 duration-500">Panduan Melati : Multimedia Pembelajaran Interaktif</div>
+								<div className="text-xl font-black duration-500">Panduan Melati : Multimedia Pembelajaran Interaktif</div>
 							</div>
-							<div className='grid-rows-1 pb-7 w-full grid gap-10 mt-7 scale-100 duration-500'>
+							<div className='grid-rows-1 pb-7 w-full grid gap-10 mt-7 duration-500'>
 								<div className='max-w-[808px] h-full bg-tertiary rounded-2xl shadow-2xl border border-solid border-b-8 border-black'>
 									<div className='text-base md:text-xl p-10 font-black'>Sebelum memulai petualangan mu dalam belajar, marilah kita membaca doa terlebih dahulu.</div>
 									<div className='p-10 pt-0 text-base md:text-xl font-black text-right'>رَضِيْتُ بِاللهِ رَبًّا وَبِالإِسْلَامِ دِيْنًا وَبِمُحَمَّدٍ نَبِيًّا وَرَسُوْلًا رَبِّ زِدْنِيْ عِلْمًا وَارْزُقْنِيْ فَهْمًا</div>
@@ -217,7 +272,7 @@ export default function Home() {
 							</div>
 							<div className='flex flex-col gap-7 justify-between'>
 								<button
-									className='text-black text-lg md:text-xl w-full font-black bg-primary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black scale-100 duration-500'
+									className='text-black text-lg md:text-xl w-full font-black bg-primary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black duration-500'
 									onClick={(event) => {
 										onClickStartPlaySound()
 										setStep("welcome")
@@ -226,7 +281,7 @@ export default function Home() {
 									🌼 Beranda Melati
 								</button>
 								<button
-									className='text-black text-lg md:text-xl w-full font-black mb-16 sm:mb-7 bg-secondary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black scale-100 duration-500'
+									className='text-black text-lg md:text-xl w-full font-black mb-16 sm:mb-7 bg-secondary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black duration-500'
 									onClick={(event) => {
 										onClickStartSelectSound()
 										setStep("guide-2")
@@ -241,7 +296,7 @@ export default function Home() {
 							<div className="text-5xl font-black ">
 								<div className='text-7xl font-black scale-105 duration-500'>🤗</div>
 								<div className="text-5xl font-black">Petunjuk Penggunaan</div>
-								<div className="text-xl font-black scale-100 duration-500">Panduan Melati : Multimedia Pembelajaran Interaktif</div>
+								<div className="text-xl font-black duration-500">Panduan Melati : Multimedia Pembelajaran Interaktif</div>
 							</div>
 							<div className='grid-rows-1 pb-7 w-full grid gap-10 mt-7 '>
 								<div className='max-w-[808px] h-full bg-tertiary rounded-2xl shadow-2xl border border-solid border-b-8 border-black'>
@@ -252,7 +307,7 @@ export default function Home() {
 							</div>
 							<div className='flex flex-col gap-7 justify-between'>
 								<button
-									className='text-black text-lg md:text-xl w-full font-black bg-primary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black scale-100 duration-500'
+									className='text-black text-lg md:text-xl w-full font-black bg-primary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black duration-500'
 									onClick={(event) => {
 										onClickStartBackSound()
 										setStep("guide-1")
@@ -261,7 +316,7 @@ export default function Home() {
 									👈 Sebelumnya
 								</button>
 								<button
-									className='text-black text-lg md:text-xl w-full font-black mb-16 sm:mb-7 bg-secondary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black scale-100 duration-500'
+									className='text-black text-lg md:text-xl w-full font-black mb-16 sm:mb-7 bg-secondary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black duration-500'
 									onClick={(event) => {
 										onClickStartSelectSound()
 										setStep("guide-3")
@@ -276,7 +331,7 @@ export default function Home() {
 							<div className="text-5xl font-black">
 								<div className='text-7xl font-black scale-105 duration-500'>🤗</div>
 								<div className="text-5xl font-black">Petunjuk Penggunaan</div>
-								<div className="text-xl font-black scale-100 duration-500">Panduan Melati : Multimedia Pembelajaran Interaktif</div>
+								<div className="text-xl font-black duration-500">Panduan Melati : Multimedia Pembelajaran Interaktif</div>
 							</div>
 							<div className='grid-rows-1 pb-7 w-full grid gap-10 mt-7'>
 								<div className='max-w-[808px] h-full bg-tertiary rounded-2xl shadow-2xl border border-solid border-b-8 border-black'>
@@ -287,7 +342,7 @@ export default function Home() {
 							</div>
 							<div className='flex flex-col gap-7 justify-between'>
 								<button
-									className='text-black text-lg md:text-xl w-full font-black bg-primary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black scale-100 duration-500'
+									className='text-black text-lg md:text-xl w-full font-black bg-primary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black duration-500'
 									onClick={(event) => {
 										onClickStartBackSound()
 										setStep("guide-2")
@@ -296,7 +351,7 @@ export default function Home() {
 									👈 Sebelumnya
 								</button>
 								<button
-									className='text-black text-lg md:text-xl w-full font-black mb-16 sm:mb-7 bg-secondary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black scale-100 duration-500'
+									className='text-black text-lg md:text-xl w-full font-black mb-16 sm:mb-7 bg-secondary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black duration-500'
 									onClick={(event) => {
 										onClickStartSelectSound()
 										setStep("guide-4")
@@ -311,7 +366,7 @@ export default function Home() {
 							<div className="text-5xl font-black">
 								<div className='text-7xl font-black scale-105 duration-500'>🤗</div>
 								<div className="text-5xl font-black">Petunjuk Penggunaan</div>
-								<div className="text-xl font-black scale-100 duration-500">Panduan Melati : Multimedia Pembelajaran Interaktif</div>
+								<div className="text-xl font-black duration-500">Panduan Melati : Multimedia Pembelajaran Interaktif</div>
 							</div>
 							<div className='grid-rows-1 pb-7 w-full grid gap-10 mt-7'>
 								<div className='max-w-[808px] h-full bg-tertiary rounded-2xl shadow-2xl border border-solid border-b-8 border-black'>
@@ -325,7 +380,7 @@ export default function Home() {
 							</div>
 							<div className='flex flex-col gap-7 justify-between'>
 								<button
-									className='text-black text-lg md:text-xl w-full font-black bg-primary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black scale-100 duration-500'
+									className='text-black text-lg md:text-xl w-full font-black bg-primary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black duration-500'
 									onClick={(event) => {
 										onClickStartBackSound()
 										setStep("guide-3")
@@ -334,7 +389,7 @@ export default function Home() {
 									👈 Sebelumnya
 								</button>
 								<button
-									className='text-black text-lg md:text-xl w-full font-black mb-16 sm:mb-7 bg-secondary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black scale-100 duration-500'
+									className='text-black text-lg md:text-xl w-full font-black mb-16 sm:mb-7 bg-secondary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black duration-500'
 									onClick={(event) => {
 										onClickStartPlaySound()
 										setStep("welcome")
@@ -346,106 +401,121 @@ export default function Home() {
 						</>
 					: step == "menu" ?
 						<>
-							<div className="text-5xl font-black scale-100 duration-500">
-								<div className='text-7xl font-black scale-105 duration-500'>🥳</div>
+							{/* <div className="scale-100 animate-[float-down_0.5s_forwards] duration-500">
+								<div className='text-7xl bg-[url("/icons/partying-face.png")] bg-contain bg-no-repeat'>ㅤ</div> */}
+								{/* <div className='text-7xl font-black scale-105 duration-500'>🥳</div> */}
+								{/* <div className="text-5xl font-black">Menu Utama Melati</div>
+								<div className="text-xl font-black">Silakan Pilih Menu Dibawah Untuk Melanjutkan</div>
+							</div> */}
+
+							<div className="animate-[float-down_0.5s_forwards] duration-500" key={"menu"}>
+								<div className='text-7xl -ml-3 bg-[url("/icons/partying-face.png")] bg-contain bg-no-repeat'>ㅤ</div>
 								<div className="text-5xl font-black">Menu Utama Melati</div>
-								<div className="text-xl font-black scale-100 duration-500">Multimedia Pembelajaran Interaktif</div>
+								<div className="text-xl font-black">Silakan Pilih Menu Dibawah Untuk Melanjutkan</div>
 							</div>
-							<div className='grid-rows-1 md:grid-cols-3 w-full grid gap-5 mt-7 scale-100 duration-500'>
+
+							<div className='grid-rows-1 md:grid-cols-3 w-full grid gap-5 mt-7 duration-500'>
 
 								<Tilt className='cursor-pointer'>
-									<div className='border border-solid border-b-8 border-black lg:w-64 h-64 bg-tertiary hover:bg-[url("/hover-menu.webp")] hover:bg-no-repeat hover:bg-right-bottom hover:bg-contain rounded-2xl shadow-2xl' onClick={(event) => {
+									<div className='border border-solid border-b-8 border-black lg:w-64 h-64 bg-tertiary hover:bg-[url("/images/hover-menu.webp")] hover:bg-no-repeat hover:bg-right-bottom hover:bg-contain rounded-2xl shadow-2xl' onClick={(event) => {
 										onClickStartMenuSound()
 										setStep("konsep-1")
 									}}>
 										<div className='text-4xl p-10 pb-0 font-black'>01</div>
 										<div className='p-10 pt-0 pb-0 text-lg font-black'>Konsep</div>
 										<div className='p-10 pt-0 pb-5 text-base font-black'>Materi Pembelajaran</div>
-										<div className='p-10 pt-0 text-3xl font-black'>💡</div>
+										{/* <div className='p-10 pt-0 text-3xl font-black'>💡</div> */}
+										<div className='m-10 mt-0 text-3xl bg-[url("/icons/light-bulb.png")] bg-contain bg-no-repeat'>ㅤ</div>
 									</div>
 								</Tilt>
 
 								<Tilt className='cursor-pointer'>
-									<div className='border border-solid border-b-8 border-black lg:w-64 h-64 bg-[#FFE3CF] hover:bg-[url("/hover-menu.webp")] hover:bg-no-repeat hover:bg-right-bottom hover:bg-contain rounded-2xl shadow-2xl' onClick={(event) => {
+									<div className='border border-solid border-b-8 border-black lg:w-64 h-64 bg-[#FFE3CF] hover:bg-[url("/images/hover-menu.webp")] hover:bg-no-repeat hover:bg-right-bottom hover:bg-contain rounded-2xl shadow-2xl' onClick={(event) => {
 										onClickStartMenuSound()
 										setStep("pendahuluan")
 									}}>
 										<div className='text-4xl p-10 pb-0 font-black'>02</div>
 										<div className='p-10 pt-0 pb-0 text-lg font-black'>Pendahuluan</div>
 										<div className='p-10 pt-0 pb-5 text-base font-black'>Pengenalan Materi</div>
-										<div className='p-10 pt-0 text-3xl font-black'>🤝</div>
+										<div className='m-10 mt-0 text-3xl bg-[url("/icons/handshake.png")] bg-contain bg-no-repeat'>ㅤ</div>
+										{/* <div className='p-10 pt-0 text-3xl font-black'>🤝</div> */}
 									</div>
 								</Tilt>
 
 								<Tilt className='cursor-pointer'>
-									<div className='border border-solid border-b-8 border-black lg:w-64 h-64 bg-[#D8F1FF] hover:bg-[url("/hover-menu.webp")] hover:bg-no-repeat hover:bg-right-bottom hover:bg-contain rounded-2xl shadow-2xl' onClick={(event) => {
+									<div className='border border-solid border-b-8 border-black lg:w-64 h-64 bg-[#D8F1FF] hover:bg-[url("/images/hover-menu.webp")] hover:bg-no-repeat hover:bg-right-bottom hover:bg-contain rounded-2xl shadow-2xl' onClick={(event) => {
 										onClickStartMenuSound()
 										setStep("materi-1")
 									}}>
 										<div className='text-4xl p-10 pb-0 font-black'>03</div>
 										<div className='p-10 pt-0 pb-0 text-lg font-black'>Materi</div>
 										<div className='p-10 pt-0 pb-5 text-base font-black'>Sistem Pernapasan</div>
-										<div className='p-10 pt-0 text-3xl font-black'>🏷️</div>
+										<div className='m-10 mt-0 text-3xl bg-[url("/icons/label.png")] bg-contain bg-no-repeat'>ㅤ</div>
+										{/* <div className='p-10 pt-0 text-3xl font-black'>🏷️</div> */}
 									</div>
 								</Tilt>
 
 								<Tilt className='cursor-pointer'>
-									<div className='border border-solid border-b-8 border-black lg:w-64 h-64 bg-[#E0F9E7] hover:bg-[url("/hover-menu.webp")] hover:bg-no-repeat hover:bg-right-bottom hover:bg-contain rounded-2xl shadow-2xl' onClick={(event) => {
+									<div className='border border-solid border-b-8 border-black lg:w-64 h-64 bg-[#E0F9E7] hover:bg-[url("/images/hover-menu.webp")] hover:bg-no-repeat hover:bg-right-bottom hover:bg-contain rounded-2xl shadow-2xl' onClick={(event) => {
 										onClickStartMenuSound()
 										setStep("latihan-1")
 									}}>
 										<div className='text-4xl p-10 pb-0 font-black'>04</div>
 										<div className='p-10 pt-0 pb-0 text-lg font-black'>Latihan</div>
 										<div className='p-10 pt-0 pb-5 text-base font-black'>Evaluasi Pemahaman</div>
-										<div className='p-10 pt-0 text-3xl font-black'>💪</div>
+										<div className='m-10 mt-0 text-3xl bg-[url("/icons/flexed-biceps.png")] bg-contain bg-no-repeat'>ㅤ</div>
+										{/* <div className='p-10 pt-0 text-3xl font-black'>💪</div> */}
 									</div>
 								</Tilt>
 
 								<Tilt className='cursor-pointer'>
-									<div className='border border-solid border-b-8 border-black lg:w-64 h-64 bg-[#EFE0FF] hover:bg-[url("/hover-menu.webp")] hover:bg-no-repeat hover:bg-right-bottom hover:bg-contain rounded-2xl shadow-2xl' onClick={(event) => {
+									<div className='border border-solid border-b-8 border-black lg:w-64 h-64 bg-[#EFE0FF] hover:bg-[url("/images/hover-menu.webp")] hover:bg-no-repeat hover:bg-right-bottom hover:bg-contain rounded-2xl shadow-2xl' onClick={(event) => {
 										onClickStartMenuSound()
 										setStep("tentang")
 									}}>
 										<div className='text-4xl p-10 pb-0 font-black'>05</div>
 										<div className='p-10 pt-0 pb-0 text-lg font-black'>Tentang</div>
 										<div className='p-10 pt-0 pb-5 text-base font-black'>Informasi Kreator</div>
-										<div className='p-10 pt-0 text-3xl font-black'>👨‍🏫</div>
+										{/* <div className='p-10 pt-0 text-3xl font-black'>👨‍🏫</div> */}
+										<div className='m-10 mt-0 text-3xl bg-[url("/icons/man-teacher.png")] bg-contain bg-no-repeat'>ㅤ</div>
 									</div>
 								</Tilt>
 
 								<Tilt className='cursor-pointer'>
-									<div className='border border-solid border-b-8 border-black lg:w-64 h-64 bg-[#FFF4CC] hover:bg-[url("/hover-menu.webp")] hover:bg-no-repeat hover:bg-right-bottom hover:bg-contain rounded-2xl shadow-2xl' onClick={(event) => {
+									<div className='border border-solid border-b-8 border-black lg:w-64 h-64 bg-[#FFF4CC] hover:bg-[url("/images/hover-menu.webp")] hover:bg-no-repeat hover:bg-right-bottom hover:bg-contain rounded-2xl shadow-2xl' onClick={(event) => {
 										onClickStartMenuSound()
 										setStep("referensi")
 									}}>
 										<div className='text-4xl p-10 pb-0 font-black'>06</div>
 										<div className='p-10 pt-0 pb-0 text-lg font-black'>Referensi</div>
 										<div className='p-10 pt-0 pb-5 text-base font-black'>Rujukan Pembuatan</div>
-										<div className='p-10 pt-0 text-3xl font-black'>📒</div>
+										{/* <div className='p-10 pt-0 text-3xl font-black'>📒</div> */}
+										<div className='m-10 mt-0 text-3xl bg-[url("/icons/ledger.png")] bg-contain bg-no-repeat'>ㅤ</div>
 									</div>
 								</Tilt>
 
 							</div>
 
 							<button
-								className='text-black text-lg md:text-xl font-black mb-16 sm:mb-7 bg-primary p-2 mt-7 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black scale-100 duration-500'
+								className='flex justify-center text-black text-lg md:text-xl font-black mb-16 sm:mb-7 bg-primary p-2 mt-7 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black animate-[float-up_0.5s] duration-500'
 								onClick={(event) => {
 									onClickStartPlaySound()
-									setIsBumperVideoPlaying(false);
+									setIsBumperVideoPlaying(false)
 									setStep("welcome")
 								}}
 							>
-								🌼 Beranda Melati
+								<div className='text-2xl leading-none bg-[url("/icons/blossom.png")] bg-contain bg-no-repeat mr-2'>ㅤ</div>
+								Beranda Melati
 							</button>
 						</>
 					: step == "konsep-1" ?
 						<>
-							<div className="text-5xl font-black">
-								<div className='text-7xl font-black scale-105 duration-500'>💡</div>
-								<div className="text-5xl font-black">Konsep</div>
-								<div className="text-xl font-black scale-100 duration-500">Materi Pembelajaran</div>
+							<div className="animate-[float-down_0.5s_forwards] duration-500" key={"konsep"}>
+								<div className='text-7xl -ml-3 bg-[url("/icons/light-bulb.png")] bg-contain bg-no-repeat'>ㅤ</div>
+								<div className="text-5xl font-black">Konsep Pembelajaran</div>
+								<div className="text-xl font-black">Rancangan Materi Yang Nantinya Akan Dipaparkan</div>
 							</div>
-							<div className='grid-rows-1 pb-7 w-full grid gap-10 mt-7 scale-100 duration-500'>
+							<div className='grid-rows-1 pb-7 w-full grid gap-10 mt-7 duration-500'>
 								<div className='max-w-[808px] h-full bg-tertiary rounded-2xl shadow-2xl border border-solid border-b-8 border-black'>
 									<div className='text-base md:text-xl p-10 font-black'>Elemen : Pemahaman IPAS.</div>
 									<div className='text-base md:text-xl p-10 pt-0 font-black'>Capaian Pemelajaran ( CP ) : Peserta didik melakukan simulasi dengan menggunakan gambar/bagan/alat/media sederhana tentang sistem organ tubuh manusia (sistem pernafasan/ pencernaan/ peredaran darah) yang dikaitkan dengan cara menjaga kesehatan organ tubuhnya dengan benar.</div>
@@ -453,7 +523,7 @@ export default function Home() {
 							</div>
 							<div className='flex flex-col gap-7 justify-between'>
 								<button
-									className='text-black text-lg md:text-xl w-full font-black bg-primary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black scale-100 duration-500'
+									className='text-black text-lg md:text-xl w-full font-black bg-primary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black duration-500'
 									onClick={(event) => {
 										onClickStartPlaySound()
 										setStep("menu")
@@ -462,7 +532,7 @@ export default function Home() {
 									🥳 Menu Utama
 								</button>
 								<button
-									className='text-black text-lg md:text-xl w-full font-black mb-16 sm:mb-7 bg-secondary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black scale-100 duration-500'
+									className='text-black text-lg md:text-xl w-full font-black mb-16 sm:mb-7 bg-secondary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black duration-500'
 									onClick={(event) => {
 										onClickStartSelectSound()
 										setStep("konsep-2")
@@ -474,10 +544,15 @@ export default function Home() {
 						</>
 					: step == "konsep-2" ?
 						<>
-							<div className="text-5xl font-black">
-								<div className='text-7xl font-black scale-105 duration-500'>💡</div>
+							{/* <div className="text-5xl font-black">
+								<div className='text-8xl bg-[url("/icons/light-bulb.png")] bg-contain bg-no-repeat scale-105 duration-500'>ㅤ</div>
 								<div className="text-5xl font-black">Konsep</div>
-								<div className="text-xl font-black scale-100 duration-500">Materi Pembelajaran</div>
+								<div className="text-xl font-black duration-500">Materi Pembelajaran</div>
+							</div> */}
+							<div className="animate-[float-down_0.5s_forwards] duration-500" key={"konsep"}>
+								<div className='text-7xl -ml-3 bg-[url("/icons/light-bulb.png")] bg-contain bg-no-repeat'>ㅤ</div>
+								<div className="text-5xl font-black">Konsep Pembelajaran</div>
+								<div className="text-xl font-black">Rancangan Materi Yang Nantinya Akan Dipaparkan</div>
 							</div>
 							<div className='grid-rows-1 pb-7 w-full grid gap-10 mt-7'>
 								<div className='max-w-[808px] h-full bg-tertiary rounded-2xl shadow-2xl border border-solid border-b-8 border-black'>
@@ -489,7 +564,7 @@ export default function Home() {
 							</div>
 							<div className='flex flex-col gap-7 justify-between'>
 								<button
-									className='text-black text-lg md:text-xl w-full font-black bg-primary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black scale-100 duration-500'
+									className='text-black text-lg md:text-xl w-full font-black bg-primary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black duration-500'
 									onClick={(event) => {
 										onClickStartBackSound()
 										setStep("konsep-1")
@@ -498,7 +573,7 @@ export default function Home() {
 									👈 Sebelumnya
 								</button>
 								<button
-									className='text-black text-lg md:text-xl w-full font-black mb-16 sm:mb-7 bg-secondary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black scale-100 duration-500'
+									className='text-black text-lg md:text-xl w-full font-black mb-16 sm:mb-7 bg-secondary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black duration-500'
 									onClick={(event) => {
 										onClickStartSelectSound()
 										setStep("konsep-3")
@@ -510,10 +585,21 @@ export default function Home() {
 						</>
 					: step == "konsep-3" ?
 						<>
-							<div className="text-5xl font-black">
-								<div className='text-7xl font-black scale-105 duration-500'>💡</div>
+							{/* <div className="text-5xl font-black">
+								<div className='text-8xl bg-[url("/icons/light-bulb.png")] bg-contain bg-no-repeat scale-105 duration-500'>ㅤ</div>
 								<div className="text-5xl font-black">Konsep</div>
-								<div className="text-xl font-black scale-100 duration-500">Materi Pembelajaran</div>
+								<div className="text-xl font-black duration-500">Materi Pembelajaran</div>
+							</div> */}
+							{/* <div className="scale-100">
+								<div className='text-7xl -ml-3 bg-[url("/icons/light-bulb.png")] bg-contain bg-no-repeat'>ㅤ</div> */}
+								{/* <div className='text-7xl font-black scale-105 duration-500'>🥳</div> */}
+								{/* <div className="text-5xl font-black">Konsep Pembelajaran</div>
+								<div className="text-xl font-black">Rancangan Materi Yang Nantinya Akan Dipaparkan</div>
+							</div> */}
+							<div className="animate-[float-down_0.5s_forwards] duration-500" key={"konsep"}>
+								<div className='text-7xl -ml-3 bg-[url("/icons/light-bulb.png")] bg-contain bg-no-repeat'>ㅤ</div>
+								<div className="text-5xl font-black">Konsep Pembelajaran</div>
+								<div className="text-xl font-black">Rancangan Materi Yang Nantinya Akan Dipaparkan</div>
 							</div>
 							<div className='grid-rows-1 pb-7 w-full grid gap-10 mt-7'>
 								<div className='max-w-[808px] h-full bg-tertiary rounded-2xl shadow-2xl border border-solid border-b-8 border-black'>
@@ -523,7 +609,7 @@ export default function Home() {
 							</div>
 							<div className='flex flex-col gap-7 justify-between'>
 								<button
-									className='text-black text-lg md:text-xl w-full font-black bg-primary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black scale-100 duration-500'
+									className='text-black text-lg md:text-xl w-full font-black bg-primary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black duration-500'
 									onClick={(event) => {
 										onClickStartBackSound()
 										setStep("konsep-2")
@@ -532,7 +618,7 @@ export default function Home() {
 									👈 Sebelumnya
 								</button>
 								<button
-									className='text-black text-lg md:text-xl w-full font-black mb-16 sm:mb-7 bg-secondary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black scale-100 duration-500'
+									className='text-black text-lg md:text-xl w-full font-black mb-16 sm:mb-7 bg-secondary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black duration-500'
 									onClick={(event) => {
 										onClickStartPlaySound()
 										setStep("menu")
@@ -546,10 +632,10 @@ export default function Home() {
 						<>
 							<div className="text-5xl font-black">
 								<div className='text-7xl font-black scale-105 duration-500'>🤝</div>
-								<div className='text-5xl font-black'>Pendahuluan</div>
-								<div className="text-xl font-black scale-100 duration-500">Pengenalan Materi</div>
+								<div className="text-5xl font-black">Pendahuluan</div>
+								<div className="text-xl font-black duration-500">Pengenalan Materi</div>
 							</div>
-							<div className='grid-rows-1 pb-7 w-full grid gap-10 mt-7 scale-100 duration-500'>
+							<div className='grid-rows-1 pb-7 w-full grid gap-10 mt-7 duration-500'>
 								<div className='max-w-[808px] h-full bg-tertiary rounded-2xl shadow-2xl border border-solid border-b-8 border-black'>
 									<div className='text-base md:text-xl p-10 pb-0 font-black'>Pendahuluan Materi Sistem Pernapasan</div>
 									<div className='text-base md:text-xl p-10 font-black'>Pernapasan atau bisa disebut juga dengan respirasi yang dapat didefinisikan sebagai sebuah proses pengambilan oksigen, pelepasan karbohidrat dan penggunaan energi yang ada di dalam tubuh.</div>
@@ -558,7 +644,7 @@ export default function Home() {
 							</div>
 							<div className='flex justify-between'>
 								<button
-									className='text-black text-lg md:text-xl w-full font-black mb-16 sm:mb-7 bg-primary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black scale-100 duration-500'
+									className='text-black text-lg md:text-xl w-full font-black mb-16 sm:mb-7 bg-primary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black duration-500'
 									onClick={(event) => {
 										onClickStartPlaySound()
 										setStep("menu")
@@ -572,20 +658,20 @@ export default function Home() {
 						<>
 							<div className="text-5xl font-black">
 								<div className='text-7xl font-black scale-105 duration-500'>🏷️</div>
-								<div className='text-5xl font-black'>Materi</div>
-								<div className="text-xl font-black scale-100 duration-500">Sistem Pernapasan</div>
+								<div className="text-5xl font-black">Materi</div>
+								<div className="text-xl font-black duration-500">Sistem Pernapasan</div>
 							</div>
-							<div className='grid-rows-1 pb-7 w-full grid gap-10 mt-7 scale-100 duration-500'>
+							<div className='grid-rows-1 pb-7 w-full grid gap-10 mt-7 duration-500'>
 								<div className='max-w-[808px] h-full bg-tertiary rounded-2xl shadow-2xl border border-solid border-b-8 border-black'>
 									<div className=' p-10 pb-0 '>
-										<div className='text-base md:text-xl font-black bg-[url("/respiration.webp")] bg-contain bg-no-repeat h-32'></div>
+										<div className='text-base md:text-xl font-black bg-[url("/images/respiration.webp")] bg-contain bg-no-repeat h-32'></div>
 									</div>
 									<div className='text-base md:text-xl p-10 font-black'>Materi Sistem Pernapasan : Bernafas sangatlah penting bagi kita, sebelumnya anak-anak harus memahami apa saja organ pernafasan beserta fungsinya.</div>
 								</div>
 							</div>
 							<div className='flex flex-col gap-7 justify-between'>
 								<button
-									className='text-black text-lg md:text-xl w-full font-black bg-primary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black scale-100 duration-500'
+									className='text-black text-lg md:text-xl w-full font-black bg-primary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black duration-500'
 									onClick={(event) => {
 										onClickStartPlaySound()
 										setStep("menu")
@@ -594,7 +680,7 @@ export default function Home() {
 									🥳 Menu Utama
 								</button>
 								<button
-									className='text-black text-lg md:text-xl w-full font-black mb-16 sm:mb-7 bg-secondary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black scale-100 duration-500'
+									className='text-black text-lg md:text-xl w-full font-black mb-16 sm:mb-7 bg-secondary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black duration-500'
 									onClick={(event) => {
 										onClickStartSelectSound()
 										setStep("materi-2")
@@ -608,8 +694,8 @@ export default function Home() {
 						<>
 							<div className="text-5xl font-black">
 								<div className='text-7xl font-black scale-105 duration-500'>🏷️</div>
-								<div className='text-5xl font-black'>Materi</div>
-								<div className="text-xl font-black scale-100 duration-500">Sistem Pernapasan</div>
+								<div className="text-5xl font-black">Materi</div>
+								<div className="text-xl font-black duration-500">Sistem Pernapasan</div>
 							</div>
 							<div className='grid-rows-1 pb-7 w-full grid gap-10 mt-7'>
 								<div className='max-w-[808px] h-full bg-tertiary rounded-2xl shadow-2xl border border-solid border-b-8 border-black'>
@@ -620,7 +706,7 @@ export default function Home() {
 							</div>
 							<div className='flex flex-col gap-7 justify-between'>
 								<button
-									className='text-black text-lg md:text-xl w-full font-black bg-primary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black scale-100 duration-500'
+									className='text-black text-lg md:text-xl w-full font-black bg-primary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black duration-500'
 									onClick={(event) => {
 										onClickStartBackSound()
 										setStep("materi-1")
@@ -629,7 +715,7 @@ export default function Home() {
 									👈 Sebelumnya
 								</button>
 								<button
-									className='text-black text-lg md:text-xl w-full font-black mb-16 sm:mb-7 bg-secondary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black scale-100 duration-500'
+									className='text-black text-lg md:text-xl w-full font-black mb-16 sm:mb-7 bg-secondary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black duration-500'
 									onClick={(event) => {
 										onClickStartSelectSound()
 										setStep("materi-3")
@@ -643,8 +729,8 @@ export default function Home() {
 						<>
 							<div className="text-5xl font-black">
 								<div className='text-7xl font-black scale-105 duration-500'>🏷️</div>
-								<div className='text-5xl font-black'>Materi</div>
-								<div className="text-xl font-black scale-100 duration-500">Sistem Pernapasan</div>
+								<div className="text-5xl font-black">Materi</div>
+								<div className="text-xl font-black duration-500">Sistem Pernapasan</div>
 							</div>
 							<div className='grid-rows-1 pb-7 w-full grid gap-10 mt-7'>
 								<div className='max-w-[808px] h-full bg-tertiary rounded-2xl shadow-2xl border border-solid border-b-8 border-black'>
@@ -654,7 +740,7 @@ export default function Home() {
 							</div>
 							<div className='flex flex-col gap-7 justify-between'>
 								<button
-									className='text-black text-lg md:text-xl w-full font-black bg-primary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black scale-100 duration-500'
+									className='text-black text-lg md:text-xl w-full font-black bg-primary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black duration-500'
 									onClick={(event) => {
 										onClickStartBackSound()
 										setStep("materi-2")
@@ -663,7 +749,7 @@ export default function Home() {
 									👈 Sebelumnya
 								</button>
 								<button
-									className='text-black text-lg md:text-xl w-full font-black mb-16 sm:mb-7 bg-secondary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black scale-100 duration-500'
+									className='text-black text-lg md:text-xl w-full font-black mb-16 sm:mb-7 bg-secondary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black duration-500'
 									onClick={(event) => {
 										onClickStartSelectSound()
 										setStep("materi-4")
@@ -677,8 +763,8 @@ export default function Home() {
 						<>
 							<div className="text-5xl font-black">
 								<div className='text-7xl font-black scale-105 duration-500'>🏷️</div>
-								<div className='text-5xl font-black'>Materi</div>
-								<div className="text-xl font-black scale-100 duration-500">Sistem Pernapasan</div>
+								<div className="text-5xl font-black">Materi</div>
+								<div className="text-xl font-black duration-500">Sistem Pernapasan</div>
 							</div>
 							<div className='grid-rows-1 pb-7 w-full grid gap-10 mt-7'>
 								<div className='max-w-[808px] h-full bg-tertiary rounded-2xl shadow-2xl border border-solid border-b-8 border-black'>
@@ -688,7 +774,7 @@ export default function Home() {
 							</div>
 							<div className='flex flex-col gap-7 justify-between'>
 								<button
-									className='text-black text-lg md:text-xl w-full font-black bg-primary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black scale-100 duration-500'
+									className='text-black text-lg md:text-xl w-full font-black bg-primary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black duration-500'
 									onClick={(event) => {
 										onClickStartBackSound()
 										setStep("materi-3")
@@ -697,7 +783,7 @@ export default function Home() {
 									👈 Sebelumnya
 								</button>
 								<button
-									className='text-black text-lg md:text-xl w-full font-black mb-16 sm:mb-7 bg-secondary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black scale-100 duration-500'
+									className='text-black text-lg md:text-xl w-full font-black mb-16 sm:mb-7 bg-secondary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black duration-500'
 									onClick={(event) => {
 										onClickStartSelectSound()
 										setStep("materi-5")
@@ -711,8 +797,8 @@ export default function Home() {
 						<>
 							<div className="text-5xl font-black">
 								<div className='text-7xl font-black scale-105 duration-500'>🏷️</div>
-								<div className='text-5xl font-black'>Materi</div>
-								<div className="text-xl font-black scale-100 duration-500">Sistem Pernapasan</div>
+								<div className="text-5xl font-black">Materi</div>
+								<div className="text-xl font-black duration-500">Sistem Pernapasan</div>
 							</div>
 							<div className='grid-rows-1 pb-7 w-full grid gap-10 mt-7'>
 								<div className='max-w-[808px] h-full bg-tertiary rounded-2xl shadow-2xl border border-solid border-b-8 border-black'>
@@ -722,7 +808,7 @@ export default function Home() {
 							</div>
 							<div className='flex flex-col gap-7 justify-between'>
 								<button
-									className='text-black text-lg md:text-xl w-full font-black bg-primary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black scale-100 duration-500'
+									className='text-black text-lg md:text-xl w-full font-black bg-primary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black duration-500'
 									onClick={(event) => {
 										onClickStartBackSound()
 										setStep("materi-4")
@@ -731,7 +817,7 @@ export default function Home() {
 									👈 Sebelumnya
 								</button>
 								<button
-									className='text-black text-lg md:text-xl w-full font-black mb-16 sm:mb-7 bg-secondary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black scale-100 duration-500'
+									className='text-black text-lg md:text-xl w-full font-black mb-16 sm:mb-7 bg-secondary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black duration-500'
 									onClick={(event) => {
 										onClickStartSelectSound()
 										setStep("materi-6")
@@ -745,8 +831,8 @@ export default function Home() {
 						<>
 							<div className="text-5xl font-black">
 								<div className='text-7xl font-black scale-105 duration-500'>🏷️</div>
-								<div className='text-5xl font-black'>Materi</div>
-								<div className="text-xl font-black scale-100 duration-500">Sistem Pernapasan</div>
+								<div className="text-5xl font-black">Materi</div>
+								<div className="text-xl font-black duration-500">Sistem Pernapasan</div>
 							</div>
 							<div className='grid-rows-1 pb-7 w-full grid gap-10 mt-7'>
 								<div className='max-w-[808px] h-full bg-tertiary rounded-2xl shadow-2xl border border-solid border-b-8 border-black'>
@@ -756,7 +842,7 @@ export default function Home() {
 							</div>
 							<div className='flex flex-col gap-7 justify-between'>
 								<button
-									className='text-black text-lg md:text-xl w-full font-black bg-primary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black scale-100 duration-500'
+									className='text-black text-lg md:text-xl w-full font-black bg-primary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black duration-500'
 									onClick={(event) => {
 										onClickStartBackSound()
 										setStep("materi-5")
@@ -765,7 +851,7 @@ export default function Home() {
 									👈 Sebelumnya
 								</button>
 								<button
-									className='text-black text-lg md:text-xl w-full font-black mb-16 sm:mb-7 bg-secondary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black scale-100 duration-500'
+									className='text-black text-lg md:text-xl w-full font-black mb-16 sm:mb-7 bg-secondary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black duration-500'
 									onClick={(event) => {
 										onClickStartSelectSound()
 										setStep("materi-7")
@@ -779,8 +865,8 @@ export default function Home() {
 						<>
 							<div className="text-5xl font-black">
 								<div className='text-7xl font-black scale-105 duration-500'>🏷️</div>
-								<div className='text-5xl font-black'>Materi</div>
-								<div className="text-xl font-black scale-100 duration-500">Sistem Pernapasan</div>
+								<div className="text-5xl font-black">Materi</div>
+								<div className="text-xl font-black duration-500">Sistem Pernapasan</div>
 							</div>
 							<div className='grid-rows-1 pb-7 w-full grid gap-10 mt-7'>
 								<div className='max-w-[808px] h-full bg-tertiary rounded-2xl shadow-2xl border border-solid border-b-8 border-black'>
@@ -790,7 +876,7 @@ export default function Home() {
 							</div>
 							<div className='flex flex-col gap-7 justify-between'>
 								<button
-									className='text-black text-lg md:text-xl w-full font-black bg-primary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black scale-100 duration-500'
+									className='text-black text-lg md:text-xl w-full font-black bg-primary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black duration-500'
 									onClick={(event) => {
 										onClickStartBackSound()
 										setStep("materi-6")
@@ -799,7 +885,7 @@ export default function Home() {
 									👈 Sebelumnya
 								</button>
 								<button
-									className='text-black text-lg md:text-xl w-full font-black mb-16 sm:mb-7 bg-secondary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black scale-100 duration-500'
+									className='text-black text-lg md:text-xl w-full font-black mb-16 sm:mb-7 bg-secondary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black duration-500'
 									onClick={(event) => {
 										onClickStartSelectSound()
 										setStep("materi-8")
@@ -813,8 +899,8 @@ export default function Home() {
 						<>
 							<div className="text-5xl font-black">
 								<div className='text-7xl font-black scale-105 duration-500'>🏷️</div>
-								<div className='text-5xl font-black'>Materi</div>
-								<div className="text-xl font-black scale-100 duration-500">Sistem Pernapasan</div>
+								<div className="text-5xl font-black">Materi</div>
+								<div className="text-xl font-black duration-500">Sistem Pernapasan</div>
 							</div>
 							<div className='grid-rows-1 pb-7 w-full grid gap-10 mt-7'>
 								<div className='max-w-[808px] h-full bg-tertiary rounded-2xl shadow-2xl border border-solid border-b-8 border-black'>
@@ -824,7 +910,7 @@ export default function Home() {
 							</div>
 							<div className='flex flex-col gap-7 justify-between'>
 								<button
-									className='text-black text-lg md:text-xl w-full font-black bg-primary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black scale-100 duration-500'
+									className='text-black text-lg md:text-xl w-full font-black bg-primary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black duration-500'
 									onClick={(event) => {
 										onClickStartBackSound()
 										setStep("materi-7")
@@ -833,7 +919,7 @@ export default function Home() {
 									👈 Sebelumnya
 								</button>
 								<button
-									className='text-black text-lg md:text-xl w-full font-black mb-16 sm:mb-7 bg-secondary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black scale-100 duration-500'
+									className='text-black text-lg md:text-xl w-full font-black mb-16 sm:mb-7 bg-secondary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black duration-500'
 									onClick={(event) => {
 										onClickStartSelectSound()
 										setStep("materi-9")
@@ -847,8 +933,8 @@ export default function Home() {
 						<>
 							<div className="text-5xl font-black">
 								<div className='text-7xl font-black scale-105 duration-500'>🏷️</div>
-								<div className='text-5xl font-black'>Materi</div>
-								<div className="text-xl font-black scale-100 duration-500">Sistem Pernapasan</div>
+								<div className="text-5xl font-black">Materi</div>
+								<div className="text-xl font-black duration-500">Sistem Pernapasan</div>
 							</div>
 							<div className='grid-rows-1 pb-7 w-full grid gap-10 mt-7'>
 								<div className='max-w-[808px] h-full bg-tertiary rounded-2xl shadow-2xl border border-solid border-b-8 border-black'>
@@ -858,7 +944,7 @@ export default function Home() {
 							</div>
 							<div className='flex flex-col gap-7 justify-between'>
 								<button
-									className='text-black text-lg md:text-xl w-full font-black bg-primary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black scale-100 duration-500'
+									className='text-black text-lg md:text-xl w-full font-black bg-primary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black duration-500'
 									onClick={(event) => {
 										onClickStartBackSound()
 										setStep("materi-8")
@@ -867,7 +953,7 @@ export default function Home() {
 									👈 Sebelumnya
 								</button>
 								<button
-									className='text-black text-lg md:text-xl w-full font-black mb-16 sm:mb-7 bg-secondary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black scale-100 duration-500'
+									className='text-black text-lg md:text-xl w-full font-black mb-16 sm:mb-7 bg-secondary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black duration-500'
 									onClick={(event) => {
 										onClickStartSelectSound()
 										setStep("materi-10")
@@ -881,8 +967,8 @@ export default function Home() {
 						<>
 							<div className="text-5xl font-black">
 								<div className='text-7xl font-black scale-105 duration-500'>🏷️</div>
-								<div className='text-5xl font-black'>Materi</div>
-								<div className="text-xl font-black scale-100 duration-500">Sistem Pernapasan</div>
+								<div className="text-5xl font-black">Materi</div>
+								<div className="text-xl font-black duration-500">Sistem Pernapasan</div>
 							</div>
 							<div className='grid-rows-1 pb-7 w-full grid gap-10 mt-7'>
 								<div className='max-w-[808px] h-full bg-tertiary rounded-2xl shadow-2xl border border-solid border-b-8 border-black'>
@@ -892,7 +978,7 @@ export default function Home() {
 							</div>
 							<div className='flex flex-col gap-7 justify-between'>
 								<button
-									className='text-black text-lg md:text-xl w-full font-black bg-primary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black scale-100 duration-500'
+									className='text-black text-lg md:text-xl w-full font-black bg-primary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black duration-500'
 									onClick={(event) => {
 										onClickStartBackSound()
 										setStep("materi-9")
@@ -901,7 +987,7 @@ export default function Home() {
 									👈 Sebelumnya
 								</button>
 								<button
-									className='text-black text-lg md:text-xl w-full font-black mb-16 sm:mb-7 bg-secondary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black scale-100 duration-500'
+									className='text-black text-lg md:text-xl w-full font-black mb-16 sm:mb-7 bg-secondary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black duration-500'
 									onClick={(event) => {
 										onClickStartSelectSound()
 										setStep("materi-11")
@@ -915,8 +1001,8 @@ export default function Home() {
 						<>
 							<div className="text-5xl font-black">
 								<div className='text-7xl font-black scale-105 duration-500'>🏷️</div>
-								<div className='text-5xl font-black'>Materi</div>
-								<div className="text-xl font-black scale-100 duration-500">Sistem Pernapasan</div>
+								<div className="text-5xl font-black">Materi</div>
+								<div className="text-xl font-black duration-500">Sistem Pernapasan</div>
 							</div>
 							<div className='grid-rows-1 pb-7 w-full grid gap-10 mt-7'>
 								<div className="bg-black h-fit lg:h-[462px] items-center justify-center rounded-3xl flex cursor-pointer border border-solid border-b-8 border-black">
@@ -933,7 +1019,7 @@ export default function Home() {
 							</div>
 							<div className='flex flex-col gap-7 justify-between'>
 								<button
-									className='text-black text-lg md:text-xl w-full font-black bg-primary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black scale-100 duration-500'
+									className='text-black text-lg md:text-xl w-full font-black bg-primary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black duration-500'
 									onClick={(event) => {
 										onClickStartBackSound()
 										setStep("materi-10")
@@ -942,7 +1028,7 @@ export default function Home() {
 									👈 Sebelumnya
 								</button>
 								<button
-									className='text-black text-lg md:text-xl w-full font-black mb-16 sm:mb-7 bg-secondary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black scale-100 duration-500'
+									className='text-black text-lg md:text-xl w-full font-black mb-16 sm:mb-7 bg-secondary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black duration-500'
 									onClick={(event) => {
 										onClickStartPlaySound()
 										setStep("menu")
@@ -956,10 +1042,10 @@ export default function Home() {
 						<>
 							<div className="text-5xl font-black">
 								<div className='text-7xl font-black scale-105 duration-500'>💪</div>
-								<div className='text-5xl font-black'>Latihan</div>	
-								<div className="text-xl font-black scale-100 duration-500">Evaluasi Pemahaman</div>
+								<div className="text-5xl font-black">Latihan</div>	
+								<div className="text-xl font-black duration-500">Evaluasi Pemahaman</div>
 							</div>
-							<div className='grid-rows-1 pb-7 w-full grid gap-10 mt-7 scale-100 duration-500'>
+							<div className='grid-rows-1 pb-7 w-full grid gap-10 mt-7 duration-500'>
 								<div className='max-w-[808px] h-full bg-tertiary rounded-2xl shadow-2xl border border-solid border-b-8 border-black'>
 									<div className='text-base md:text-xl p-10 font-black'>Halo, teman - teman !</div>
 									<div className='text-base md:text-xl p-10 pt-0 font-black'>Setelah kalian berjuang dalam memahami materi tadi, saat nya untuk kalian bermain games</div>
@@ -969,7 +1055,16 @@ export default function Home() {
 							</div>
 							<div className='flex flex-col gap-7 justify-between'>
 								<button
-									className='text-black text-lg md:text-xl w-full font-black bg-primary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black scale-100 duration-500'
+									className='text-black text-lg md:text-xl w-full font-black bg-primary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black duration-500'
+									onClick={(event) => {
+										onClickStartPlaySound()
+										setStep("menu")
+									}}
+								>
+									🥳 Menu Utama
+								</button>
+								<button
+									className='text-black text-lg md:text-xl w-full font-black mb-16 sm:mb-7 bg-secondary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black duration-500'
 									onClick={(event) => {
 										onClickStartPlaySound()
 										onClickStartMainSound()
@@ -979,23 +1074,19 @@ export default function Home() {
 								>
 									🎮 Mulai Games
 								</button>
-								<button
-									className='text-black text-lg md:text-xl w-full font-black mb-16 sm:mb-7 bg-secondary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black scale-100 duration-500'
-									onClick={(event) => {
-										onClickStartPlaySound()
-										setStep("menu")
-									}}
-								>
-									🥳 Menu Utama
-								</button>
 							</div>
 						</>
 					: step == "latihan-2" ?
 						<>
-							<div className="text-5xl font-black">
+							{/* <div className="text-5xl font-black">
 								<div className='text-7xl font-black scale-105 duration-500'>💪</div>
-								<div className='text-5xl font-black'>Latihan</div>	
-								<div className="text-xl font-black scale-100 duration-500">Evaluasi Pemahaman</div>
+								<div className="text-5xl font-black">Latihan</div>	
+								<div className="text-xl font-black duration-500">Evaluasi Pemahaman</div>
+							</div> */}
+							<div className="animate-[float-down_0.5s_forwards] duration-500" key={"latihan"}>
+								<div className='text-7xl -ml-3 bg-[url("/icons/flexed-biceps.png")] bg-contain bg-no-repeat'>ㅤ</div>
+								<div className="text-5xl font-black">Latihan Sembari Bermain</div>
+								<div className="text-xl font-black">Saatnya Bermain Games, Uji Pemahaman Materi Kalian Yuk !</div>
 							</div>
 							<div className='grid-rows-1 w-fit grid gap-10 mt-7 scale-100 duration-500'>
 								<div className='max-w-[808px] h-fit bg-tertiary rounded-2xl shadow-2xl border border-solid border-b-8 border-black'>
@@ -1047,12 +1138,17 @@ export default function Home() {
 
 										<div className='w-fit'>
 
-											<div className='flex text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl p-10 w-full justify-between'>
-												<div className=' -scale-x-100 animate-pulse'>🏃</div>
-												<div className=' animate-bounce'>🐛</div>
-												<div className=''>🦗</div>
-												<div className=''>🐞</div>
-												<div className=' animate-pulse'>💎</div>
+											<div className='flex text-4xl md:text-5xl lg:text-6xl xl:text-7xl p-10 w-full justify-between'>
+												{/* <div className=' -scale-x-100 animate-pulse'>🏃</div> */}
+												<div className='-scale-x-100 bg-[url("/icons/person-running.png")] bg-contain bg-no-repeat'>ㅤ</div>
+												{/* <div className=' animate-bounce'>🐛</div> */}
+												<div className='animate-bounce bg-[url("/icons/bug.png")] bg-contain bg-no-repeat'>ㅤ</div>
+												{/* <div className=''>🦗</div> */}
+												<div className='bg-[url("/icons/cricket.png")] bg-contain bg-no-repeat'>ㅤ</div>
+												{/* <div className=''>🐞</div> */}
+												<div className='bg-[url("/icons/lady-beetle.png")] bg-contain bg-no-repeat'>ㅤ</div>
+												{/* <div className=' animate-pulse'>💎</div> */}
+												<div className='animate-pulse bg-[url("/icons/gem-stone.png")] bg-contain bg-no-repeat'>ㅤ</div>
 											</div>
 											<div className='p-10 pt-0 pb-0 h-full'>
 												<div className='text-base md:text-xl font-black'>
@@ -1078,9 +1174,9 @@ export default function Home() {
 														onChange={(event) => {
 															setFirstAnswer(event.target.value.toLowerCase().slice(0, 1))
 															if (event.target.value == "") {
-																document.getElementById('first-answer').focus();
+																document.getElementById('first-answer').focus()
 															} else {
-																document.getElementById('second-answer').focus();
+																document.getElementById('second-answer').focus()
 															}
 														}}
 														onClick={(event) => {
@@ -1090,7 +1186,7 @@ export default function Home() {
 															onClickStartSelectSound()
 															if (event.key === "Backspace") {
 																if (firstAnswer == "") {
-																	document.getElementById('first-answer').focus();
+																	document.getElementById('first-answer').focus()
 																} else {
 																	setFirstAnswer("")
 																}
@@ -1114,9 +1210,9 @@ export default function Home() {
 														onChange={(event) => {
 															setSecondAnswer(event.target.value.toLowerCase().slice(0, 1))
 															if (event.target.value == "") {
-																document.getElementById('second-answer').focus();
+																document.getElementById('second-answer').focus()
 															} else {
-																document.getElementById('third-answer').focus();
+																document.getElementById('third-answer').focus()
 															}
 														}}
 														onClick={(event) => {
@@ -1126,7 +1222,7 @@ export default function Home() {
 															onClickStartSelectSound()
 															if (event.key === "Backspace") {
 																if (secondAnswer == "") {
-																	document.getElementById('first-answer').focus();
+																	document.getElementById('first-answer').focus()
 																} else {
 																	setSecondAnswer("")
 																}
@@ -1150,9 +1246,9 @@ export default function Home() {
 														onChange={(event) => {
 															setThirdAnswer(event.target.value.toLowerCase().slice(0, 1))
 															if (event.target.value == "") {
-																document.getElementById('third-answer').focus();
+																document.getElementById('third-answer').focus()
 															} else {
-																document.getElementById('fourth-answer').focus();
+																document.getElementById('fourth-answer').focus()
 															}
 														}}
 														onClick={(event) => {
@@ -1162,7 +1258,7 @@ export default function Home() {
 															onClickStartSelectSound()
 															if (event.key === "Backspace") {
 																if (thirdAnswer == "") {
-																	document.getElementById('second-answer').focus();
+																	document.getElementById('second-answer').focus()
 																} else {
 																	setThirdAnswer("")
 																}
@@ -1186,9 +1282,9 @@ export default function Home() {
 														onChange={(event) => {
 															setFourthAnswer(event.target.value.toLowerCase().slice(0, 1))
 															if (event.target.value == "") {
-																document.getElementById('fourth-answer').focus();
+																document.getElementById('fourth-answer').focus()
 															} else {
-																document.getElementById('fifth-answer').focus();
+																document.getElementById('fifth-answer').focus()
 															}
 														}}
 														onClick={(event) => {
@@ -1198,7 +1294,7 @@ export default function Home() {
 															onClickStartSelectSound()
 															if (event.key === "Backspace") {
 																if (fourthAnswer == "") {
-																	document.getElementById('third-answer').focus();
+																	document.getElementById('third-answer').focus()
 																} else {
 																	setFourthAnswer("")
 																}
@@ -1222,9 +1318,9 @@ export default function Home() {
 														onChange={(event) => {
 															setFifthAnswer(event.target.value.toLowerCase().slice(0, 1))
 															if (event.target.value == "") {
-																document.getElementById('fifth-answer').focus();
+																document.getElementById('fifth-answer').focus()
 															} else {
-																document.getElementById('sixth-answer').focus();
+																document.getElementById('sixth-answer').focus()
 															}
 														}}
 														onClick={(event) => {
@@ -1234,7 +1330,7 @@ export default function Home() {
 															onClickStartSelectSound()
 															if (event.key === "Backspace") {
 																if (fifthAnswer == "") {
-																	document.getElementById('fourth-answer').focus();
+																	document.getElementById('fourth-answer').focus()
 																} else {
 																	setFifthAnswer("")
 																}
@@ -1258,9 +1354,9 @@ export default function Home() {
 														onChange={(event) => {
 															setSixthAnswer(event.target.value.toLowerCase().slice(0, 1))
 															if (event.target.value == "") {
-																document.getElementById('sixth-answer').focus();
+																document.getElementById('sixth-answer').focus()
 															} else {
-																document.getElementById('sixth-answer').blur();
+																document.getElementById('sixth-answer').blur()
 															}
 														}}
 														onClick={(event) => {
@@ -1270,7 +1366,7 @@ export default function Home() {
 															onClickStartSelectSound()
 															if (event.key === "Backspace") {
 																if (sixthAnswer == "") {
-																	document.getElementById('fifth-answer').focus();
+																	document.getElementById('fifth-answer').focus()
 																} else {
 																	setSixthAnswer("")
 																}
@@ -1295,7 +1391,7 @@ export default function Home() {
 							</div>
 							<div className='flex flex-col pt-7 justify-between'>
 								<button
-									className={`text-black text-lg md:text-xl w-full font-black bg-primary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black scale-100 duration-500 ${firstAnswer + secondAnswer + thirdAnswer + fourthAnswer + fifthAnswer + sixthAnswer == "trakea" || firstAnswer.length == 1 && secondAnswer.length == 1 && thirdAnswer.length == 1 && fourthAnswer.length == 1 && fifthAnswer.length == 1 && sixthAnswer.length == 1 && firstAnswer + secondAnswer + thirdAnswer + fourthAnswer + fifthAnswer + sixthAnswer != "trakea" ? `mb-7` : `mb-16 sm:mb-7`}`}
+									className={`animate-[float-up_0.5s] duration-500 flex justify-center  text-black text-lg md:text-xl w-full font-black bg-primary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black ${firstAnswer + secondAnswer + thirdAnswer + fourthAnswer + fifthAnswer + sixthAnswer == "trakea" || firstAnswer.length == 1 && secondAnswer.length == 1 && thirdAnswer.length == 1 && fourthAnswer.length == 1 && fifthAnswer.length == 1 && sixthAnswer.length == 1 && firstAnswer + secondAnswer + thirdAnswer + fourthAnswer + fifthAnswer + sixthAnswer != "trakea" ? `mb-7` : `mb-16 sm:mb-7`}`}
 									onClick={(event) => {
 										onClickStartPlaySound()
 										setFirstAnswer("")
@@ -1308,12 +1404,14 @@ export default function Home() {
 										setEighthAnswer("")
 										setStep("menu")
 									}}
+									key={"first-level-1-button"}
 								>
-									🥳 Menu Utama
+								<div className='text-2xl leading-none bg-[url("/icons/partying-face.png")] bg-contain bg-no-repeat mr-2'>ㅤ</div>
+									Menu Utama
 								</button>
 								{firstAnswer + secondAnswer + thirdAnswer + fourthAnswer + fifthAnswer + sixthAnswer == "trakea" &&
 									<button
-										className='text-black text-lg md:text-xl w-full font-black mb-16 sm:mb-7 bg-secondary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black scale-100 duration-500'
+										className='text-black text-lg md:text-xl w-full font-black mb-16 sm:mb-7 bg-secondary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black duration-500'
 										onClick={(event) => {
 											onClickStartPlaySound()
 											setFirstAnswer("")
@@ -1332,7 +1430,7 @@ export default function Home() {
 								}
 								{firstAnswer.length == 1 && secondAnswer.length == 1 && thirdAnswer.length == 1 && fourthAnswer.length == 1 && fifthAnswer.length == 1 && sixthAnswer.length == 1 && firstAnswer + secondAnswer + thirdAnswer + fourthAnswer + fifthAnswer + sixthAnswer != "trakea" &&
 									<button
-										className='text-black text-lg md:text-xl w-full font-black mb-16 sm:mb-7 bg-secondary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black scale-100 duration-500'
+										className='text-black text-lg md:text-xl w-full font-black mb-16 sm:mb-7 bg-secondary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black duration-500'
 										onClick={(event) => {
 											onClickStartPlaySound()
 											setFirstAnswer("")
@@ -1354,8 +1452,8 @@ export default function Home() {
 						<>
 							<div className="text-5xl font-black">
 								<div className='text-7xl font-black scale-105 duration-500'>💪</div>
-								<div className='text-5xl font-black'>Latihan</div>	
-								<div className="text-xl font-black scale-100 duration-500">Evaluasi Pemahaman</div>
+								<div className="text-5xl font-black">Latihan</div>	
+								<div className="text-xl font-black duration-500">Evaluasi Pemahaman</div>
 							</div>
 							<div className='grid-rows-1 w-fit grid gap-10 mt-7 scale-100 duration-500'>
 								<div className='max-w-[808px] h-fit bg-tertiary rounded-2xl shadow-2xl border border-solid border-b-8 border-black'>
@@ -1428,7 +1526,7 @@ export default function Home() {
 
 										<div className='w-full place-content-center flex'>
 
-											<div className='flex flex-wrap place-content-center w-fit p-10 gap-5 scale-100 duration-500 '>
+											<div className='flex flex-wrap place-content-center w-fit p-10 gap-5 duration-500 '>
 												<div className='bg-tertiary w-14 h-14 flex place-content-center'>
 													<input
 														id='first-answer'
@@ -1438,9 +1536,9 @@ export default function Home() {
 														onChange={(event) => {
 															setFirstAnswer(event.target.value.toLowerCase().slice(0, 1))
 															if (event.target.value == "") {
-																document.getElementById('first-answer').focus();
+																document.getElementById('first-answer').focus()
 															} else {
-																document.getElementById('second-answer').focus();
+																document.getElementById('second-answer').focus()
 															}
 														}}
 														onClick={(event) => {
@@ -1450,7 +1548,7 @@ export default function Home() {
 															onClickStartSelectSound()
 															if (event.key === "Backspace") {
 																if (firstAnswer == "") {
-																	document.getElementById('first-answer').focus();
+																	document.getElementById('first-answer').focus()
 																} else {
 																	setFirstAnswer("")
 																}
@@ -1474,9 +1572,9 @@ export default function Home() {
 														onChange={(event) => {
 															setSecondAnswer(event.target.value.toLowerCase().slice(0, 1))
 															if (event.target.value == "") {
-																document.getElementById('second-answer').focus();
+																document.getElementById('second-answer').focus()
 															} else {
-																document.getElementById('third-answer').focus();
+																document.getElementById('third-answer').focus()
 															}
 														}}
 														onClick={(event) => {
@@ -1486,7 +1584,7 @@ export default function Home() {
 															onClickStartSelectSound()
 															if (event.key === "Backspace") {
 																if (secondAnswer == "") {
-																	document.getElementById('first-answer').focus();
+																	document.getElementById('first-answer').focus()
 																} else {
 																	setSecondAnswer("")
 																}
@@ -1510,9 +1608,9 @@ export default function Home() {
 														onChange={(event) => {
 															setThirdAnswer(event.target.value.toLowerCase().slice(0, 1))
 															if (event.target.value == "") {
-																document.getElementById('third-answer').focus();
+																document.getElementById('third-answer').focus()
 															} else {
-																document.getElementById('fourth-answer').focus();
+																document.getElementById('fourth-answer').focus()
 															}
 														}}
 														onClick={(event) => {
@@ -1522,7 +1620,7 @@ export default function Home() {
 															onClickStartSelectSound()
 															if (event.key === "Backspace") {
 																if (thirdAnswer == "") {
-																	document.getElementById('second-answer').focus();
+																	document.getElementById('second-answer').focus()
 																} else {
 																	setThirdAnswer("")
 																}
@@ -1546,9 +1644,9 @@ export default function Home() {
 														onChange={(event) => {
 															setFourthAnswer(event.target.value.toLowerCase().slice(0, 1))
 															if (event.target.value == "") {
-																document.getElementById('fourth-answer').focus();
+																document.getElementById('fourth-answer').focus()
 															} else {
-																document.getElementById('fifth-answer').focus();
+																document.getElementById('fifth-answer').focus()
 															}
 														}}
 														onClick={(event) => {
@@ -1558,7 +1656,7 @@ export default function Home() {
 															onClickStartSelectSound()
 															if (event.key === "Backspace") {
 																if (fourthAnswer == "") {
-																	document.getElementById('third-answer').focus();
+																	document.getElementById('third-answer').focus()
 																} else {
 																	setFourthAnswer("")
 																}
@@ -1582,9 +1680,9 @@ export default function Home() {
 														onChange={(event) => {
 															setFifthAnswer(event.target.value.toLowerCase().slice(0, 1))
 															if (event.target.value == "") {
-																document.getElementById('fifth-answer').focus();
+																document.getElementById('fifth-answer').focus()
 															} else {
-																document.getElementById('sixth-answer').focus();
+																document.getElementById('sixth-answer').focus()
 															}
 														}}
 														onClick={(event) => {
@@ -1594,7 +1692,7 @@ export default function Home() {
 															onClickStartSelectSound()
 															if (event.key === "Backspace") {
 																if (fifthAnswer == "") {
-																	document.getElementById('fourth-answer').focus();
+																	document.getElementById('fourth-answer').focus()
 																} else {
 																	setFifthAnswer("")
 																}
@@ -1618,9 +1716,9 @@ export default function Home() {
 														onChange={(event) => {
 															setSixthAnswer(event.target.value.toLowerCase().slice(0, 1))
 															if (event.target.value == "") {
-																document.getElementById('sixth-answer').focus();
+																document.getElementById('sixth-answer').focus()
 															} else {
-																document.getElementById('seventh-answer').focus();
+																document.getElementById('seventh-answer').focus()
 															}
 														}}
 														onClick={(event) => {
@@ -1630,7 +1728,7 @@ export default function Home() {
 															onClickStartSelectSound()
 															if (event.key === "Backspace") {
 																if (sixthAnswer == "") {
-																	document.getElementById('fifth-answer').focus();
+																	document.getElementById('fifth-answer').focus()
 																} else {
 																	setSixthAnswer("")
 																}
@@ -1654,9 +1752,9 @@ export default function Home() {
 														onChange={(event) => {
 															setSeventhAnswer(event.target.value.toLowerCase().slice(0, 1))
 															if (event.target.value == "") {
-																document.getElementById('seventh-answer').focus();
+																document.getElementById('seventh-answer').focus()
 															} else {
-																document.getElementById('eighth-answer').focus();
+																document.getElementById('eighth-answer').focus()
 															}
 														}}
 														onClick={(event) => {
@@ -1666,7 +1764,7 @@ export default function Home() {
 															onClickStartSelectSound()
 															if (event.key === "Backspace") {
 																if (seventhAnswer == "") {
-																	document.getElementById('sixth-answer').focus();
+																	document.getElementById('sixth-answer').focus()
 																} else {
 																	setSeventhAnswer("")
 																}
@@ -1690,9 +1788,9 @@ export default function Home() {
 														onChange={(event) => {
 															setEighthAnswer(event.target.value.toLowerCase().slice(0, 1))
 															if (event.target.value == "") {
-																document.getElementById('eighth-answer').focus();
+																document.getElementById('eighth-answer').focus()
 															} else {
-																document.getElementById('eighth-answer').blur();
+																document.getElementById('eighth-answer').blur()
 															}
 														}}
 														onClick={(event) => {
@@ -1702,7 +1800,7 @@ export default function Home() {
 															onClickStartSelectSound()
 															if (event.key === "Backspace") {
 																if (eighthAnswer == "") {
-																	document.getElementById('seventh-answer').focus();
+																	document.getElementById('seventh-answer').focus()
 																} else {
 																	setEighthAnswer("")
 																}
@@ -1727,7 +1825,7 @@ export default function Home() {
 							</div>
 							<div className='flex flex-col pt-7 justify-between'>
 								<button
-									className={`text-black text-lg md:text-xl w-full font-black bg-primary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black scale-100 duration-500 ${firstAnswer + secondAnswer + thirdAnswer + fourthAnswer + fifthAnswer + sixthAnswer + seventhAnswer + eighthAnswer == "alveolus" || firstAnswer.length == 1 && secondAnswer.length == 1 && thirdAnswer.length == 1 && fourthAnswer.length == 1 && fifthAnswer.length == 1 && sixthAnswer.length == 1 && seventhAnswer.length == 1 && eighthAnswer.length == 1 && firstAnswer + secondAnswer + thirdAnswer + fourthAnswer + fifthAnswer + sixthAnswer + seventhAnswer + eighthAnswer != "alveolus" ? `mb-7` : `mb-16 sm:mb-7`}`}
+									className={`text-black text-lg md:text-xl w-full font-black bg-primary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black duration-500 ${firstAnswer + secondAnswer + thirdAnswer + fourthAnswer + fifthAnswer + sixthAnswer + seventhAnswer + eighthAnswer == "alveolus" || firstAnswer.length == 1 && secondAnswer.length == 1 && thirdAnswer.length == 1 && fourthAnswer.length == 1 && fifthAnswer.length == 1 && sixthAnswer.length == 1 && seventhAnswer.length == 1 && eighthAnswer.length == 1 && firstAnswer + secondAnswer + thirdAnswer + fourthAnswer + fifthAnswer + sixthAnswer + seventhAnswer + eighthAnswer != "alveolus" ? `mb-7` : `mb-16 sm:mb-7`}`}
 									onClick={(event) => {
 										onClickStartPlaySound()
 										setFirstAnswer("")
@@ -1745,7 +1843,7 @@ export default function Home() {
 								</button>
 								{firstAnswer + secondAnswer + thirdAnswer + fourthAnswer + fifthAnswer + sixthAnswer + seventhAnswer + eighthAnswer == "alveolus" &&
 									<button
-										className='text-black text-lg md:text-xl w-full font-black mb-16 sm:mb-7 bg-secondary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black scale-100 duration-500'
+										className='text-black text-lg md:text-xl w-full font-black mb-16 sm:mb-7 bg-secondary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black duration-500'
 										onClick={(event) => {
 											onClickStartPlaySound()
 											setFirstAnswer("")
@@ -1764,7 +1862,7 @@ export default function Home() {
 								}
 								{firstAnswer.length == 1 && secondAnswer.length == 1 && thirdAnswer.length == 1 && fourthAnswer.length == 1 && fifthAnswer.length == 1 && sixthAnswer.length == 1 && seventhAnswer.length == 1 && eighthAnswer.length == 1 && firstAnswer + secondAnswer + thirdAnswer + fourthAnswer + fifthAnswer + sixthAnswer + seventhAnswer + eighthAnswer != "alveolus" &&
 									<button
-										className='text-black text-lg md:text-xl w-full font-black mb-16 sm:mb-7 bg-secondary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black scale-100 duration-500'
+										className='text-black text-lg md:text-xl w-full font-black mb-16 sm:mb-7 bg-secondary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black duration-500'
 										onClick={(event) => {
 											onClickStartPlaySound()
 											setFirstAnswer("")
@@ -1786,8 +1884,8 @@ export default function Home() {
 						<>
 							<div className="text-5xl font-black">
 								<div className='text-7xl font-black scale-105 duration-500'>💪</div>
-								<div className='text-5xl font-black'>Latihan</div>	
-								<div className="text-xl font-black scale-100 duration-500">Evaluasi Pemahaman</div>
+								<div className="text-5xl font-black">Latihan</div>	
+								<div className="text-xl font-black duration-500">Evaluasi Pemahaman</div>
 							</div>
 							<div className='grid-rows-1 w-fit grid gap-10 mt-7 scale-100 duration-500'>
 								<div className='max-w-[808px] h-fit bg-tertiary rounded-2xl shadow-2xl border border-solid border-b-8 border-black'>
@@ -1866,7 +1964,7 @@ export default function Home() {
 
 										<div className='w-full place-content-center flex'>
 
-											<div className='flex flex-wrap place-content-center w-fit p-10 gap-5 scale-100 duration-500 '>
+											<div className='flex flex-wrap place-content-center w-fit p-10 gap-5 duration-500 '>
 												<div className='bg-tertiary w-14 h-14 flex place-content-center'>
 													<input
 														id='first-answer'
@@ -1876,9 +1974,9 @@ export default function Home() {
 														onChange={(event) => {
 															setFirstAnswer(event.target.value.toLowerCase().slice(0, 1))
 															if (event.target.value == "") {
-																document.getElementById('first-answer').focus();
+																document.getElementById('first-answer').focus()
 															} else {
-																document.getElementById('second-answer').focus();
+																document.getElementById('second-answer').focus()
 															}
 														}}
 														onClick={(event) => {
@@ -1888,7 +1986,7 @@ export default function Home() {
 															onClickStartSelectSound()
 															if (event.key === "Backspace") {
 																if (firstAnswer == "") {
-																	document.getElementById('first-answer').focus();
+																	document.getElementById('first-answer').focus()
 																} else {
 																	setFirstAnswer("")
 																}
@@ -1912,9 +2010,9 @@ export default function Home() {
 														onChange={(event) => {
 															setSecondAnswer(event.target.value.toLowerCase().slice(0, 1))
 															if (event.target.value == "") {
-																document.getElementById('second-answer').focus();
+																document.getElementById('second-answer').focus()
 															} else {
-																document.getElementById('third-answer').focus();
+																document.getElementById('third-answer').focus()
 															}
 														}}
 														onClick={(event) => {
@@ -1924,7 +2022,7 @@ export default function Home() {
 															onClickStartSelectSound()
 															if (event.key === "Backspace") {
 																if (secondAnswer == "") {
-																	document.getElementById('first-answer').focus();
+																	document.getElementById('first-answer').focus()
 																} else {
 																	setSecondAnswer("")
 																}
@@ -1948,9 +2046,9 @@ export default function Home() {
 														onChange={(event) => {
 															setThirdAnswer(event.target.value.toLowerCase().slice(0, 1))
 															if (event.target.value == "") {
-																document.getElementById('third-answer').focus();
+																document.getElementById('third-answer').focus()
 															} else {
-																document.getElementById('fourth-answer').focus();
+																document.getElementById('fourth-answer').focus()
 															}
 														}}
 														onClick={(event) => {
@@ -1960,7 +2058,7 @@ export default function Home() {
 															onClickStartSelectSound()
 															if (event.key === "Backspace") {
 																if (thirdAnswer == "") {
-																	document.getElementById('second-answer').focus();
+																	document.getElementById('second-answer').focus()
 																} else {
 																	setThirdAnswer("")
 																}
@@ -1984,9 +2082,9 @@ export default function Home() {
 														onChange={(event) => {
 															setFourthAnswer(event.target.value.toLowerCase().slice(0, 1))
 															if (event.target.value == "") {
-																document.getElementById('fourth-answer').focus();
+																document.getElementById('fourth-answer').focus()
 															} else {
-																document.getElementById('fifth-answer').focus();
+																document.getElementById('fifth-answer').focus()
 															}
 														}}
 														onClick={(event) => {
@@ -1996,7 +2094,7 @@ export default function Home() {
 															onClickStartSelectSound()
 															if (event.key === "Backspace") {
 																if (fourthAnswer == "") {
-																	document.getElementById('third-answer').focus();
+																	document.getElementById('third-answer').focus()
 																} else {
 																	setFourthAnswer("")
 																}
@@ -2020,9 +2118,9 @@ export default function Home() {
 														onChange={(event) => {
 															setFifthAnswer(event.target.value.toLowerCase().slice(0, 1))
 															if (event.target.value == "") {
-																document.getElementById('fifth-answer').focus();
+																document.getElementById('fifth-answer').focus()
 															} else {
-																document.getElementById('sixth-answer').focus();
+																document.getElementById('sixth-answer').focus()
 															}
 														}}
 														onClick={(event) => {
@@ -2032,7 +2130,7 @@ export default function Home() {
 															onClickStartSelectSound()
 															if (event.key === "Backspace") {
 																if (fifthAnswer == "") {
-																	document.getElementById('fourth-answer').focus();
+																	document.getElementById('fourth-answer').focus()
 																} else {
 																	setFifthAnswer("")
 																}
@@ -2056,9 +2154,9 @@ export default function Home() {
 														onChange={(event) => {
 															setSixthAnswer(event.target.value.toLowerCase().slice(0, 1))
 															if (event.target.value == "") {
-																document.getElementById('sixth-answer').focus();
+																document.getElementById('sixth-answer').focus()
 															} else {
-																document.getElementById('seventh-answer').focus();
+																document.getElementById('seventh-answer').focus()
 															}
 														}}
 														onClick={(event) => {
@@ -2068,7 +2166,7 @@ export default function Home() {
 															onClickStartSelectSound()
 															if (event.key === "Backspace") {
 																if (sixthAnswer == "") {
-																	document.getElementById('fifth-answer').focus();
+																	document.getElementById('fifth-answer').focus()
 																} else {
 																	setSixthAnswer("")
 																}
@@ -2092,9 +2190,9 @@ export default function Home() {
 														onChange={(event) => {
 															setSeventhAnswer(event.target.value.toLowerCase().slice(0, 1))
 															if (event.target.value == "") {
-																document.getElementById('seventh-answer').focus();
+																document.getElementById('seventh-answer').focus()
 															} else {
-																document.getElementById('seventh-answer').focus();
+																document.getElementById('seventh-answer').focus()
 															}
 														}}
 														onClick={(event) => {
@@ -2104,7 +2202,7 @@ export default function Home() {
 															onClickStartSelectSound()
 															if (event.key === "Backspace") {
 																if (seventhAnswer == "") {
-																	document.getElementById('sixth-answer').focus();
+																	document.getElementById('sixth-answer').focus()
 																} else {
 																	setSeventhAnswer("")
 																}
@@ -2129,7 +2227,7 @@ export default function Home() {
 							</div>
 							<div className='flex flex-col pt-7 justify-between'>
 								<button
-									className={`text-black text-lg md:text-xl w-full font-black bg-primary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black scale-100 duration-500 ${firstAnswer + secondAnswer + thirdAnswer + fourthAnswer + fifthAnswer + sixthAnswer + seventhAnswer == "fegbadc" || firstAnswer.length == 1 && secondAnswer.length == 1 && thirdAnswer.length == 1 && fourthAnswer.length == 1 && fifthAnswer.length == 1 && sixthAnswer.length == 1 && seventhAnswer.length == 1 && firstAnswer + secondAnswer + thirdAnswer + fourthAnswer + fifthAnswer + sixthAnswer + seventhAnswer != "fegbadc" ? `mb-7` : `mb-16 sm:mb-7`}`}
+									className={`text-black text-lg md:text-xl w-full font-black bg-primary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black duration-500 ${firstAnswer + secondAnswer + thirdAnswer + fourthAnswer + fifthAnswer + sixthAnswer + seventhAnswer == "fegbadc" || firstAnswer.length == 1 && secondAnswer.length == 1 && thirdAnswer.length == 1 && fourthAnswer.length == 1 && fifthAnswer.length == 1 && sixthAnswer.length == 1 && seventhAnswer.length == 1 && firstAnswer + secondAnswer + thirdAnswer + fourthAnswer + fifthAnswer + sixthAnswer + seventhAnswer != "fegbadc" ? `mb-7` : `mb-16 sm:mb-7`}`}
 									onClick={(event) => {
 										onClickStartPlaySound()
 										setFirstAnswer("")
@@ -2147,7 +2245,7 @@ export default function Home() {
 								</button>
 								{firstAnswer + secondAnswer + thirdAnswer + fourthAnswer + fifthAnswer + sixthAnswer + seventhAnswer == "fegbadc" &&
 									<button
-										className='text-black text-lg md:text-xl w-full font-black mb-16 sm:mb-7 bg-secondary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black scale-100 duration-500'
+										className='text-black text-lg md:text-xl w-full font-black mb-16 sm:mb-7 bg-secondary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black duration-500'
 										onClick={(event) => {
 											marioCompleteAudio.play()
 											setFirstAnswer("")
@@ -2167,7 +2265,7 @@ export default function Home() {
 								}
 								{firstAnswer.length == 1 && secondAnswer.length == 1 && thirdAnswer.length == 1 && fourthAnswer.length == 1 && fifthAnswer.length == 1 && sixthAnswer.length == 1 && seventhAnswer.length == 1 && firstAnswer + secondAnswer + thirdAnswer + fourthAnswer + fifthAnswer + sixthAnswer + seventhAnswer != "fegbadc" &&
 									<button
-										className='text-black text-lg md:text-xl w-full font-black mb-16 sm:mb-7 bg-secondary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black scale-100 duration-500'
+										className='text-black text-lg md:text-xl w-full font-black mb-16 sm:mb-7 bg-secondary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black duration-500'
 										onClick={(event) => {
 											onClickStartPlaySound()
 											setFirstAnswer("")
@@ -2189,10 +2287,10 @@ export default function Home() {
 						<>
 							<div className="text-5xl font-black">
 								<div className='text-7xl font-black scale-105 duration-500'>💪</div>
-								<div className='text-5xl font-black'>Latihan</div>	
-								<div className="text-xl font-black scale-100 duration-500">Evaluasi Pemahaman</div>
+								<div className="text-5xl font-black">Latihan</div>	
+								<div className="text-xl font-black duration-500">Evaluasi Pemahaman</div>
 							</div>
-							<div className='grid-rows-1 pb-7 w-full grid gap-10 mt-7 scale-100 duration-500'>
+							<div className='grid-rows-1 pb-7 w-full grid gap-10 mt-7 duration-500'>
 								<div className='max-w-[808px] h-full bg-tertiary rounded-2xl shadow-2xl border border-solid border-b-8 border-black'>
 
 									<div className='flex text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl p-10 w-full justify-between'>
@@ -2201,13 +2299,13 @@ export default function Home() {
 										<div className='flex place-items-center place-content-center'><div className='absolute text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl text-red-600 font-black'>X</div>🐞</div>
 										<div className=' -scale-x-100 animate-pulse'>🏃</div>
 										<div 
-											className='flex place-items-center place-content-center cursor-pointer' 
+											className='flex place-items-center place-content-center cursor-pointer animate-bounce' 
 											onClick={(event) => {
 												marioCompleteAudio.play()
 												setIsBerlianOpened(true)
 											}}
 										>
-											<div className='absolute text-xs text-red-600 font-black'>BARU</div>
+											<div className='absolute text-xs text-rose-600 font-black'>BUKA</div>
 											💎
 										</div>
 									</div>
@@ -2218,7 +2316,7 @@ export default function Home() {
 							</div>
 							<div className='flex justify-between'>
 								<button
-									className='text-black text-lg md:text-xl w-full font-black mb-16 sm:mb-7 bg-primary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black scale-100 duration-500'
+									className='text-black text-lg md:text-xl w-full font-black mb-16 sm:mb-7 bg-primary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black duration-500'
 									onClick={(event) => {
 										onClickStartPlaySound()
 										setStep("menu")
@@ -2232,17 +2330,21 @@ export default function Home() {
 						<>
 							<div className="text-5xl font-black">
 								<div className='text-7xl font-black scale-105 duration-500'>👨‍🏫</div>
-								<div className='text-5xl font-black'>Tentang</div>
-								<div className="text-xl font-black scale-100 duration-500">Informasi Kreator</div>
+								<div className="text-5xl font-black">Tentang</div>
+								<div className="text-xl font-black duration-500">Informasi Kreator</div>
 							</div>
-							<div className='grid-rows-1 pb-7 w-full grid gap-10 mt-7 scale-100 duration-500'>
+							<div className='grid-rows-1 pb-7 w-full grid gap-10 mt-7 duration-500'>
 								<div className='max-w-[808px] h-full bg-tertiary rounded-2xl shadow-2xl border border-solid border-b-8 border-black'>
-									<div className='text-base md:text-xl p-10 font-black'>Perkenalkan nama saya ibrahim, seorang guru UPT SDN 337 Gresik (SDN Kotakusuma)</div>
+									<div className=' p-10 pb-0 '>
+										<div className='text-base md:text-xl font-black bg-[url("/images/profile.webp")] bg-contain bg-no-repeat h-32'></div>
+									</div>
+									<div className='text-base md:text-xl p-10 font-black'>Perkenalkan nama saya ibrahim, seorang guru UPT SDN 337 Gresik (SDN Kotakusuma). Saya berdomisili di Kec. Sangkapura, Kab. Gresik Prov. Jawa Timur (Pulau Bawean).</div>
+									<div className='text-base md:text-xl pt-0 p-10 font-black'>Menguatkan Ekosistem Digital Pendidikan dengan Berkarya dan Berbagi untuk Wujudkan Merdeka Belajar.  Kreator Melati dan peserta #PembaTIK2023 level 3, Ibrahim</div>
 								</div>
 							</div>
 							<div className='flex justify-between'>
 								<button
-									className='text-black text-lg md:text-xl w-full font-black mb-16 sm:mb-7 bg-primary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black scale-100 duration-500'
+									className='text-black text-lg md:text-xl w-full font-black mb-16 sm:mb-7 bg-primary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black duration-500'
 									onClick={(event) => {
 										onClickStartPlaySound()
 										setStep("menu")
@@ -2256,10 +2358,10 @@ export default function Home() {
 							<>
 								<div className="text-5xl font-black">
 								<div className='text-7xl font-black scale-105 duration-500'>📒</div>
-								<div className='text-5xl font-black'>Referensi</div>
-								<div className="text-xl font-black scale-100 duration-500">Rujukan Pembuatan</div>
+								<div className="text-5xl font-black">Referensi</div>
+								<div className="text-xl font-black duration-500">Rujukan Pembuatan</div>
 							</div>
-							<div className='grid-rows-1 pb-7 w-full grid gap-10 mt-7 scale-100 duration-500'>
+							<div className='grid-rows-1 pb-7 w-full grid gap-10 mt-7 duration-500'>
 								<div className='max-w-[808px] h-full bg-tertiary rounded-2xl shadow-2xl border border-solid border-b-8 border-black'>
 									<div className='text-base md:text-xl p-10 font-black'>Referensi yang digunakan dalam pembuatan multimedia pembelajaran interaktif ini : </div>
 									<div className='text-base md:text-xl p-10 pb-0 pt-0 font-black'>
@@ -2323,7 +2425,7 @@ export default function Home() {
 							</div>
 							<div className='flex justify-between'>
 								<button
-									className='text-black text-lg md:text-xl w-full font-black mb-16 sm:mb-7 bg-primary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black scale-100 duration-500'
+									className='text-black text-lg md:text-xl w-full font-black mb-16 sm:mb-7 bg-primary p-2 rounded-2xl cursor-pointer hover:scale-105 border border-solid border-b-8 border-black duration-500'
 									onClick={(event) => {
 										onClickStartPlaySound()
 										setStep("menu")
@@ -2334,14 +2436,37 @@ export default function Home() {
 							</div>
 							</>
 						:
+
 						<></>
+
 					}
 					
 				</div>
+
 			</div>
 
-			{/* footer for full screen */}
+			{/* footer */}
 			<div className='fixed right-5 bottom-5 space-y-5'>
+
+				{/* scroll management */}
+				{!isFullscreeen &&
+					<div
+						className="bg-primary flex place-content-center rounded-2xl cursor-pointer hover:scale-105 duration-500 border border-solid border-b-8 border-black"
+						onClick={(event) => {
+							onClickStartSelectSound()
+							isAtTop ? scrollToBottom() : scrollToTop()
+						}}
+					>
+						{isAtTop
+							?
+							<div className='text-2xl m-2 leading-none bg-[url("/icons/down-arrow.png")] bg-contain bg-no-repeat duration-500'>ㅤ</div>
+							:
+							<div className='text-2xl m-2 leading-none bg-[url("/icons/up-arrow.png")] bg-contain bg-no-repeat duration-500'>ㅤ</div>
+						}
+					</div>
+				}
+				
+				{/* sound management */}
 				<div
 					className="bg-primary flex place-content-center rounded-2xl cursor-pointer hover:scale-105 duration-500 border border-solid border-b-8 border-black"
 					onClick={(event) => {
@@ -2351,11 +2476,13 @@ export default function Home() {
 				>
 					{isMainAudioPlaying
 						?
-						<div className='text-2xl p-2 pb-0.5 text-white'>🔊</div>
+						<div className='text-2xl m-2 leading-none bg-[url("/icons/speaker-high-volume.png")] bg-contain bg-no-repeat duration-500'>ㅤ</div>
 						:
-						<div className='text-2xl p-2 pb-0.5 text-white'>🔇</div>
+						<div className='text-2xl m-2 leading-none bg-[url("/icons/muted-speaker.png")] bg-contain bg-no-repeat duration-500'>ㅤ</div>
 					}
 				</div>
+
+				{/* full screen handler */}
 				<div
 					className="bg-primary flex place-content-center rounded-2xl cursor-pointer hover:scale-105 duration-500 border border-solid border-b-8 border-black"
 					onClick={(event) => {
@@ -2364,76 +2491,41 @@ export default function Home() {
 						setIsFullscreeen(!isFullscreeen)
 					}}
 				>
-					<div className='text-2xl p-2 pb-0.5 text-white'>💻</div>
+					<div className='text-2xl m-2 leading-none bg-[url("/icons/laptop.png")] bg-contain bg-no-repeat duration-500'>ㅤ</div>
 				</div>
+				
 			</div>
 
 			{/* suprize modevaka */}
 			<div  className='w-full'>
-				<div className={`opacity-0 fixed left-0 text-7xl ${isBerlianOpened && `animate-[float-over_7s]`}`}>
-					💎
-				</div>
-				<div className={`opacity-0 fixed left-20 text-5xl ${isBerlianOpened && `animate-[float-over_14s]`}`}>
-					💎
-				</div>
-				<div className={`opacity-0 fixed left-10 text-7xl ${isBerlianOpened && `animate-[float-over_1s]`}`}>
-					💎
-				</div>
-				<div className={`opacity-0 fixed left-20 text-5xl ${isBerlianOpened && `animate-[float-over_4s]`}`}>
-					💎
-				</div>
-				<div className={`opacity-0 fixed left-52 text-5xl ${isBerlianOpened && `animate-[float-over_5s]`}`}>
-					💎
-				</div>
 
-				<div className={`opacity-0 fixed left-96 text-7xl ${isBerlianOpened && `animate-[float-over_14s]`}`}>
-					💎
-				</div>
-				<div className={`opacity-0 fixed left-[400px] text-5xl ${isBerlianOpened && `animate-[float-over_1s]`}`}>
-					💎
-				</div>
-				<div className={`opacity-0 fixed left-[600px] text-7xl ${isBerlianOpened && `animate-[float-over_8s]`}`}>
-					💎
-				</div>
-				<div className={`opacity-0 fixed left-80 text-5xl ${isBerlianOpened && `animate-[float-over_3s]`}`}>
-					💎
-				</div>
-				<div className={`opacity-0 fixed left-[700] text-5xl ${isBerlianOpened && `animate-[float-over_2s]`}`}>
-					💎
-				</div>
+				<div className={`opacity-0 fixed left-0 text-7xl ${isBerlianOpened && `animate-[float-over_7s]`}`}>💎</div>
+				<div className={`opacity-0 fixed left-20 text-5xl ${isBerlianOpened && `animate-[float-over_14s]`}`}>💎</div>
+				<div className={`opacity-0 fixed left-10 text-7xl ${isBerlianOpened && `animate-[float-over_1s]`}`}>💎</div>
+				<div className={`opacity-0 fixed left-20 text-5xl ${isBerlianOpened && `animate-[float-over_4s]`}`}>💎</div>
+				<div className={`opacity-0 fixed left-52 text-5xl ${isBerlianOpened && `animate-[float-over_5s]`}`}>💎</div>
 
-				<div className={`opacity-0 fixed right-0 text-7xl ${isBerlianOpened && `animate-[float-over_5s]`}`}>
-					💎
-				</div>
-				<div className={`opacity-0 fixed right-20 text-5xl ${isBerlianOpened && `animate-[float-over_14s]`}`}>
-					💎
-				</div>
-				<div className={`opacity-0 fixed right-10 text-7xl ${isBerlianOpened && `animate-[float-over_1s]`}`}>
-					💎
-				</div>
-				<div className={`opacity-0 fixed right-20 text-5xl ${isBerlianOpened && `animate-[float-over_4s]`}`}>
-					💎
-				</div>
-				<div className={`opacity-0 fixed right-60 text-5xl ${isBerlianOpened && `animate-[float-over_2s]`}`}>
-					💎
-				</div>
+				<div className={`opacity-0 fixed left-96 text-7xl ${isBerlianOpened && `animate-[float-over_14s]`}`}>💎</div>
+				<div className={`opacity-0 fixed left-[400px] text-5xl ${isBerlianOpened && `animate-[float-over_1s]`}`}>💎</div>
+				<div className={`opacity-0 fixed left-[600px] text-7xl ${isBerlianOpened && `animate-[float-over_8s]`}`}>💎</div>
+				<div className={`opacity-0 fixed left-80 text-5xl ${isBerlianOpened && `animate-[float-over_3s]`}`}>💎</div>
+				<div className={`opacity-0 fixed left-[700] text-5xl ${isBerlianOpened && `animate-[float-over_2s]`}`}>💎</div>
 
-				<div className={`opacity-0 fixed right-[900px] text-3xl ${isBerlianOpened && `animate-[float-over_5s]`}`}>
-					💎
-				</div>
-				<div className={`opacity-0 fixed right-56 text-5xl ${isBerlianOpened && `animate-[float-over_8s]`}`}>
-					💎
-				</div>
-				<div className={`opacity-0 fixed right-[600px] text-7xl ${isBerlianOpened && `animate-[float-over_7s]`}`}>
-					💎
-				</div>
-				<div className={`opacity-0 fixed right-[800px] text-5xl ${isBerlianOpened && `animate-[float-over_14s]`}`}>
-					💎
-				</div>
-				<div className={`opacity-0 fixed right-[450px] text-5xl ${isBerlianOpened && `animate-[float-over_12s]`}`}>
-					💎
-				</div>
+				<div className={`opacity-0 fixed right-0 text-7xl ${isBerlianOpened && `animate-[float-over_5s]`}`}>💎</div>
+				<div className={`opacity-0 fixed right-20 text-5xl ${isBerlianOpened && `animate-[float-over_14s]`}`}>💎</div>
+				<div className={`opacity-0 fixed right-10 text-7xl ${isBerlianOpened && `animate-[float-over_1s]`}`}>💎</div>
+				<div className={`opacity-0 fixed right-20 text-5xl ${isBerlianOpened && `animate-[float-over_4s]`}`}>💎</div>
+				<div className={`opacity-0 fixed right-60 text-5xl ${isBerlianOpened && `animate-[float-over_2s]`}`}>💎</div>
+
+				<div className={`opacity-0 fixed right-[900px] text-3xl ${isBerlianOpened && `animate-[float-over_5s]`}`}>💎</div>
+				<div className={`opacity-0 fixed right-56 text-5xl ${isBerlianOpened && `animate-[float-over_8s]`}`}>💎</div>
+				<div className={`opacity-0 fixed right-[600px] text-7xl ${isBerlianOpened && `animate-[float-over_7s]`}`}>💎</div>
+				<div className={`opacity-0 fixed right-[800px] text-5xl ${isBerlianOpened && `animate-[float-over_14s]`}`}>💎</div>
+				<div className={`opacity-0 fixed right-[450px] text-5xl ${isBerlianOpened && `animate-[float-over_12s]`}`}>💎</div>
+
 			</div>
+
 		</FullScreen>
+
 	)
 }
