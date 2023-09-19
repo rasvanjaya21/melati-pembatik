@@ -5,7 +5,7 @@ import { Grandstander } from "next/font/google"
 const grandstander = Grandstander({ subsets: ["latin"] })
 
 export const metadata = {
-	title: "Melati - Web Multimedia Pembelajaran",
+	title: "Melati - Web Multimedia Pembelajaran Interaktif",
 	description: "Web Multimedia Pembelajaran Interaktif Melati",
 }
 
