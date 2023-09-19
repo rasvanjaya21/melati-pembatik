@@ -2650,7 +2650,7 @@ export default function Home() {
 										<div className='text-base md:text-xl font-black bg-[url("/images/profile.webp")] bg-contain bg-no-repeat h-32'></div>
 									</div>
 									<div className='text-base md:text-xl p-10 font-black'>Perkenalkan nama saya ibrahim, seorang guru UPT SDN 337 Gresik (SDN Kotakusuma). Saya berdomisili di Kec. Sangkapura, Kab. Gresik Prov. Jawa Timur (Pulau Bawean).</div>
-									<div className='text-base md:text-xl pt-0 p-10 font-black'>Menguatkan Ekosistem Digital Pendidikan dengan Berkarya dan Berbagi untuk Wujudkan Merdeka Belajar.  Kreator Melati dan peserta #PembaTIK2023 level 3, Ibrahim</div>
+									<div className='text-base md:text-xl pt-0 p-10 font-black'>Menguatkan Ekosistem Digital Pendidikan dengan Berkarya dan Berbagi untuk Wujudkan Merdeka Belajar.  Kreator Melati dan peserta #PembaTIK2023 level 3, Ibrahim S. Pd. SD.</div>
 								</div>
 							</div>
 
