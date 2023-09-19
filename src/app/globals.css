@@ -56,10 +56,10 @@ body {
 @keyframes float-over {
   from {
     transform: translateY(100%);
-    opacity: 0;
+    opacity: 0.3;
   }
   to {
     transform: translateY(-200vh);
-    opacity: 1;
+    opacity: 0.9;
   }
 }
